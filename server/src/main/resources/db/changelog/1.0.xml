@@ -98,4 +98,43 @@
             <column name="name" value="ROLE_ADMIN"/>
         </insert>
     </changeSet>
+
+    <changeSet id="1.0.6" author="alexander.lyutikov">
+        <createTable tableName="sudoku">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="original_sudoku" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="solution" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="created" type="TIMESTAMP" defaultValue="now()">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="updated" type="TIMESTAMP" defaultValue="now()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1.0.7" author="alexander.lyutikov">
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="sudoku"
+                                 constraintName="fk_sudoku_user"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedColumnNames="id"
+                                 referencedTableName="users"/>
+    </changeSet>
+
+
 </databaseChangeLog>

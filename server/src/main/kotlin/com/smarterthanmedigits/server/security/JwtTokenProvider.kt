@@ -5,6 +5,7 @@ import io.jsonwebtoken.JwtException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -25,6 +26,7 @@ class JwtTokenProvider {
     @Value("\${jwt.token.expired}")
     private val validityInMilliseconds: Long = 0
 
+    @Qualifier("jwtUserDetailsService")
     @Autowired
     private val userDetailsService: UserDetailsService? = null
     @Bean

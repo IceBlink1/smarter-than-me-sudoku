@@ -1,6 +1,6 @@
 package com.smarterthanmedigits.server.security
 
-import JwtUser
+import com.smarterthanmedigits.server.security.JwtUser
 import com.smarterthanmedigits.server.model.Role
 import com.smarterthanmedigits.server.model.Status
 import com.smarterthanmedigits.server.model.User

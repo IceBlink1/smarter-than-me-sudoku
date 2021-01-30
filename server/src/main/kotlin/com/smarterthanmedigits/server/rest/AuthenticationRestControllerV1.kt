@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.util.*
 import javax.naming.AuthenticationException
 import javax.persistence.PersistenceException
 
@@ -54,14 +55,18 @@ class AuthenticationRestControllerV1
             username = request.username
             password = request.password
             email = request.email
+            created = Date()
+            updated = Date()
         }
-        try {
-            return ResponseEntity(HttpStatus.CREATED)
+
+        return try {
+            userService.register(user)
+            ResponseEntity(HttpStatus.CREATED)
         } catch (pe: PersistenceException) {
             if(user.username == null) {
-                return ResponseEntity(HttpStatus.BAD_REQUEST)
+                ResponseEntity(HttpStatus.BAD_REQUEST)
             } else {
-                return ResponseEntity(HttpStatus.CONFLICT)
+                ResponseEntity(HttpStatus.CONFLICT)
             }
         }
     }

@@ -1,3 +1,5 @@
+package com.smarterthanmedigits.server.security
+
 import com.fasterxml.jackson.annotation.JsonIgnore
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails

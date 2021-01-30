@@ -33,10 +33,14 @@ dependencies {
 	implementation("io.jsonwebtoken:jjwt:0.9.1")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.12.0")
 	compileOnly("org.projectlombok:lombok")
+	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	runtimeOnly("org.postgresql:postgresql:42.2.18")
 	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
+	implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
+	implementation("com.vladmihalcea:hibernate-types-52:2.10.2")
 }
 
 tasks.withType<KotlinCompile> {

@@ -21,10 +21,6 @@ open class BaseEntity {
     @Column(name = "updated")
     var updated: Date? = null
 
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status")
-    var status: Status? = null
 }
 
 enum class Status {
