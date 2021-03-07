@@ -70,5 +70,6 @@ dependencies {
     implementation "androidx.room:room-ktx:2.2.6"
     testImplementation "androidx.room:room-testing:2.2.6"
     implementation "com.squareup.okhttp3:logging-interceptor:4.9.0"
+    implementation project(path: ":digitRecognition")
 
 }

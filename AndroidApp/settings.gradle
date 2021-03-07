@@ -1,3 +1,4 @@
+include ':digitRecognition'
+include ':openCVLibrary343'
 include ':app'
 rootProject.name = "SmarterThanMeSudokuApp"
-include ':openCVLibrary343'

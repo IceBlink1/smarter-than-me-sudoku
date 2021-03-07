@@ -1,4 +1,4 @@
-package digitRecognition;
+package com.digitrecognition;
 
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
@@ -13,6 +13,7 @@ public class NeuralNetwork {
 
     /**
      * Считывает веса сети из файла.
+     *
      * @param filename Путь к файлу с параметрами нейронной сети.
      * @throws IOException
      */
@@ -44,6 +45,7 @@ public class NeuralNetwork {
 
     /**
      * Вычисляет результат для входных данных.
+     *
      * @param inputs Массив входных данных.
      * @return Массив выходных данных.
      */
@@ -59,8 +61,8 @@ public class NeuralNetwork {
 
     private Mat applyActivationFunction(Mat signals) {
         Mat result = signals.clone();
-        for(int i = 0; i < signals.height(); ++i) {
-            for(int j = 0; j < signals.width(); ++j) {
+        for (int i = 0; i < signals.height(); ++i) {
+            for (int j = 0; j < signals.width(); ++j) {
                 result.put(i, j, 1.0 / (1.0 + Math.exp(-signals.get(i, j)[0])));
             }
         }

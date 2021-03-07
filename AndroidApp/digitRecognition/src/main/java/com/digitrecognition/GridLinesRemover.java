@@ -1,4 +1,4 @@
-package digitRecognition;
+package com.digitrecognition;
 
 import org.opencv.core.Mat;
 import org.opencv.core.Point;

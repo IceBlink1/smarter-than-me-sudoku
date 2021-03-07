@@ -1,4 +1,4 @@
-package digitRecognition;
+package com.digitrecognition;
 
 public class IntPair {
     public final int first;
