@@ -136,5 +136,12 @@
                                  referencedTableName="users"/>
     </changeSet>
 
+    <changeSet id="1.0.8" author="alexander.lyutikov">
+        <addColumn tableName="sudoku">
+            <column name="complexity" type="INTEGER">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
 
 </databaseChangeLog>

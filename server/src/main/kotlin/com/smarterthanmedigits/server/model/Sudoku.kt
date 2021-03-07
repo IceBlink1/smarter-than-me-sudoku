@@ -22,4 +22,7 @@ class Sudoku: BaseEntity() {
 
     @ManyToOne(fetch = FetchType.LAZY)
     var user: User? = null
+
+    @Column(name = "complexity")
+    var complexity: Int? = null
 }

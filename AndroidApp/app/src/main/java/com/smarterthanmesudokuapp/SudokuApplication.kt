@@ -1,9 +1,8 @@
 package com.smarterthanmesudokuapp
 
-import android.app.Application
 import android.content.SharedPreferences
-import com.smarterthanmesudokuapp.api.AuthApi
-import com.smarterthanmesudokuapp.api.SudokuApi
+import com.smarterthanmesudokuapp.data.remote.AuthApi
+import com.smarterthanmesudokuapp.data.remote.SudokuApi
 import com.smarterthanmesudokuapp.di.DaggerApplicationComponent
 import dagger.android.AndroidInjector
 import dagger.android.HasAndroidInjector

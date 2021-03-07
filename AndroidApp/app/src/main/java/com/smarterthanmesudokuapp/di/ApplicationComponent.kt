@@ -13,7 +13,10 @@ import javax.inject.Singleton
     modules = [
         AndroidSupportInjectionModule::class,
         HomeModule::class,
-        ActivityModule::class
+        ActivityModule::class,
+        ApplicationModule::class,
+        LocalModule::class,
+        RemoteModule::class
     ]
 )
 interface ApplicationComponent : AndroidInjector<SudokuApplication> {

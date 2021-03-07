@@ -1,4 +1,4 @@
-package com.smarterthanmesudokuapp.api.post
+package com.smarterthanmesudokuapp.data.remote.post
 
 import com.google.gson.annotations.SerializedName
 

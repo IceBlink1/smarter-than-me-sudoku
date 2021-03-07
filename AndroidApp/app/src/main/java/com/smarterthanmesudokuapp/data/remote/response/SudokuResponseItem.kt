@@ -1,4 +1,4 @@
-package com.smarterthanmesudokuapp.api.response
+package com.smarterthanmesudokuapp.data.remote.response
 
 data class SudokuResponseItem(
     val authorUserId: Int,

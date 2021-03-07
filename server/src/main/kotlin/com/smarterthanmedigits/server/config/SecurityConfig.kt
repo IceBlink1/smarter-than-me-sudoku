@@ -44,6 +44,6 @@ class SecurityConfig @Autowired constructor(val jwtTokenProvider: JwtTokenProvid
 
     companion object {
         private const val ADMIN_ENDPOINT = "/api/v1/admin/**"
-        private const val LOGIN_ENDPOINT = "/api/v1/auth/**"
+        private const val LOGIN_ENDPOINT = "/api/v1/auth/unlogged/**"
     }
 }

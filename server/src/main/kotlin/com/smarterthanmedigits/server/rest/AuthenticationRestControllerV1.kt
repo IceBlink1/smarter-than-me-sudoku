@@ -6,6 +6,7 @@ import com.smarterthanmedigits.server.dto.AuthRequestDto
 import com.smarterthanmedigits.server.dto.RegisterRequestDto
 import com.smarterthanmedigits.server.model.User
 import com.smarterthanmedigits.server.security.JwtTokenProvider
+import com.smarterthanmedigits.server.security.JwtUser
 import com.smarterthanmedigits.server.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Import
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -32,7 +34,7 @@ class AuthenticationRestControllerV1
         @Autowired val jwtTokenProvider: JwtTokenProvider,
         @Autowired val userService: UserService
 ) {
-    @PostMapping("login")
+    @PostMapping("unlogged/login")
     fun login(@RequestBody requestDto: AuthRequestDto): ResponseEntity<Any?> {
         try {
             val username = requestDto.username
@@ -49,8 +51,8 @@ class AuthenticationRestControllerV1
         }
     }
 
-    @PostMapping("register")
-    fun register(@RequestBody request: RegisterRequestDto) : ResponseEntity<String> {
+    @PostMapping("unlogged/register")
+    fun register(@RequestBody request: RegisterRequestDto): ResponseEntity<String> {
         val user = User().apply {
             username = request.username
             password = request.password
@@ -61,13 +63,30 @@ class AuthenticationRestControllerV1
 
         return try {
             userService.register(user)
+            val response = mutableMapOf<Any?, Any?>()
+            response.put("username", request.username)
+            val token = jwtTokenProvider.createToken(request.username, user.roles)
+            response.put("token", token)
             ResponseEntity(HttpStatus.CREATED)
         } catch (pe: PersistenceException) {
-            if(user.username == null) {
+            if (user.username == null) {
                 ResponseEntity(HttpStatus.BAD_REQUEST)
             } else {
                 ResponseEntity(HttpStatus.CONFLICT)
             }
+        }
+    }
+
+    @PostMapping("refresh_token")
+    fun refreshToken(): ResponseEntity<Any?> {
+        val user = getUser() ?: return ResponseEntity(HttpStatus.NOT_FOUND)
+        val token = jwtTokenProvider.createToken(user.username, user.roles)
+        return ResponseEntity.ok(mutableMapOf<Any, Any>("token" to token))
+    }
+
+    private fun getUser(): User? {
+        return (SecurityContextHolder.getContext().authentication.principal as JwtUser).username?.let {
+            userService.findByUsername(it)
         }
     }
 }

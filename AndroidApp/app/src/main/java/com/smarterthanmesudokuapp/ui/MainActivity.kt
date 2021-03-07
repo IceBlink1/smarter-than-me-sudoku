@@ -21,29 +21,24 @@ class MainActivity : DaggerAppCompatActivity() {
     private lateinit var binding: ActivityNavigationDrawerBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        try {
-            super.onCreate(savedInstanceState)
-            binding = ActivityNavigationDrawerBinding.inflate(layoutInflater)
-            setContentView(binding.root)
-            setSupportActionBar(binding.appbarLayout.toolbar)
-            binding.appbarLayout.fab.setOnClickListener { view ->
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-            }
-            val navController = findNavController(R.id.nav_host_fragment)
-            // Passing each menu ID as a set of Ids because each
-            // menu should be considered as top level destinations.
-            appBarConfiguration = AppBarConfiguration(
-                setOf(
-                    R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow
-                ), binding.drawerLayout
-            )
-            setupActionBarWithNavController(navController, appBarConfiguration)
-            binding.navView.setupWithNavController(navController)
-        } catch (ex: Exception) {
-            ex.message?.let { Log.e("blyat", it) }
-            throw ex
+        super.onCreate(savedInstanceState)
+        binding = ActivityNavigationDrawerBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.appbarLayout.toolbar)
+        binding.appbarLayout.fab.setOnClickListener { view ->
+            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show()
         }
+        val navController = findNavController(R.id.nav_host_fragment)
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+        appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow
+            ), binding.drawerLayout
+        )
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        binding.navView.setupWithNavController(navController)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
