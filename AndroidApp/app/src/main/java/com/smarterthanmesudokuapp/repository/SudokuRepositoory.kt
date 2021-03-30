@@ -8,5 +8,7 @@ class SudokuRepository @Inject constructor(
     private val localDataSource: SudokuLocalDataSource,
     private val sudokuRemoteDataSource: SudokuRemoteDataSource
 ) {
+    suspend fun postSudokus() {
 
+    }
 }

@@ -3,6 +3,7 @@ package com.smarterthanmesudokuapp.di
 import com.smarterthanmesudokuapp.data.local.SudokuDB
 import com.smarterthanmesudokuapp.data.local.SudokuDao
 import com.smarterthanmesudokuapp.data.local.SudokuLocalDataSource
+import com.smarterthanmesudokuapp.data.local.SudokuLocalMapper
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -19,7 +20,17 @@ class LocalModule {
 
     @Singleton
     @Provides
-    fun providesProductRepository(sudokuDao: SudokuDao): SudokuLocalDataSource {
-        return SudokuLocalDataSource(sudokuDao)
+    fun providesProductRepository(
+        sudokuDao: SudokuDao,
+        sudokuLocalMapper: SudokuLocalMapper
+    ): SudokuLocalDataSource {
+        return SudokuLocalDataSource(sudokuDao, sudokuLocalMapper)
     }
+
+    @Singleton
+    @Provides
+    fun providesSudokuLocalMapper(): SudokuLocalMapper {
+        return SudokuLocalMapper()
+    }
+
 }

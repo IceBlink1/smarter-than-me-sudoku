@@ -2,6 +2,7 @@ package com.smarterthanmesudokuapp.di
 
 import android.content.Context
 import com.smarterthanmesudokuapp.SudokuApplication
+import com.smarterthanmesudokuapp.ui.fragments.home.HomeModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjector

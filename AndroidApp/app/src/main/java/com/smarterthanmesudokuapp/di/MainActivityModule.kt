@@ -9,6 +9,6 @@ import dagger.android.ContributesAndroidInjector
 
 @Module
 abstract class MainActivityModule {
-//    @ContributesAndroidInjector
-//    abstract fun provideHomeFragment(): HomeFragment
+    @ContributesAndroidInjector
+    abstract fun provideHomeFragment(): HomeFragment
 }

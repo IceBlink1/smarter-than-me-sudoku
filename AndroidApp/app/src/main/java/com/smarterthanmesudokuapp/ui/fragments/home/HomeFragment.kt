@@ -5,28 +5,64 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.smarterthanmesudokuapp.R
-import dagger.android.support.DaggerFragment
+import com.smarterthanmesudokuapp.databinding.FragmentHomeBinding
+import com.smarterthanmesudokuapp.domain.entities.SudokuVo
 import javax.inject.Inject
 
-class HomeFragment : DaggerFragment() {
+class HomeFragment : Fragment() {
+
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private val homeViewModel by viewModels<HomeViewModel> { viewModelFactory }
 
+    private lateinit var viewBinding: FragmentHomeBinding
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val root = inflater.inflate(R.layout.fragment_home, container, false)
-        val textView: TextView = root.findViewById(R.id.text_home)
-        homeViewModel.text.observe(viewLifecycleOwner, {
-            textView.text = it
-        })
-        return root
+    ): View {
+        viewBinding =
+            FragmentHomeBinding.inflate(LayoutInflater.from(requireContext()), container, false)
+        return viewBinding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewBinding.sudokuView.setUp(
+            SudokuVo(
+                sudoku = listOf(
+                    listOf(1, 2, 3, 4, 5, 6, 7, 8, 9),
+                    listOf(2, 3, 4, 5, 6, 7, 8, 9, 1),
+                    listOf(3, 4, 5, 6, 7, 8, 9, 1, 2),
+                    listOf(4, 5, 6, 7, 8, 9, 1, 2, 3),
+                    listOf(5, 6, 7, 8, 9, 1, 2, 3, 4),
+                    listOf(6, 7, 8, 9, 1, 2, 3, 4, 5),
+                    listOf(7, 8, 9, 1, 2, 3, 4, 5, 6),
+                    listOf(8, 9, 1, 2, 3, 4, 5, 6, 7),
+                    listOf(9, 1, 2, 3, 4, 5, 6, 7, 8)
+                ),
+                solution = listOf(
+                    listOf(1, 2, 3, 4, 5, 6, 7, 8, 9),
+                    listOf(2, 3, 4, 5, 6, 7, 8, 9, 1),
+                    listOf(3, 4, 5, 6, 7, 8, 9, 1, 2),
+                    listOf(4, 5, 6, 7, 8, 9, 1, 2, 3),
+                    listOf(5, 6, 7, 8, 9, 1, 2, 3, 4),
+                    listOf(6, 7, 8, 9, 1, 2, 3, 4, 5),
+                    listOf(7, 8, 9, 1, 2, 3, 4, 5, 6),
+                    listOf(8, 9, 1, 2, 3, 4, 5, 6, 7),
+                    listOf(9, 1, 2, 3, 4, 5, 6, 7, 8)
+                ),
+                complexity = 5,
+                showSolutionGroup = true
+            )
+        )
     }
 }
