@@ -1,5 +1,8 @@
-package com.digitrecognition;
-
+import org.deeplearning4j.nn.modelimport.keras.exceptions.InvalidKerasConfigurationException;
+import org.deeplearning4j.nn.modelimport.keras.exceptions.UnsupportedKerasConfigurationException;
+import org.nd4j.linalg.api.ndarray.INDArray;
+import org.nd4j.linalg.cpu.nativecpu.NDArray;
+import org.nd4j.linalg.factory.Nd4j;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
@@ -10,18 +13,18 @@ import java.util.ArrayList;
 import java.util.Queue;
 
 public class DigitRecogniser {
-    private final NeuralNetwork network;
 
-    public DigitRecogniser() throws IOException  {
-        network = new NeuralNetwork("result200-0.100000-1norm.txt");
-    }
+    private final DigitRecognitionNN network;
 
-    public DigitRecogniser(String path) throws IOException {
-        network = new NeuralNetwork(path);
+    public DigitRecogniser() throws IOException,
+            UnsupportedKerasConfigurationException,
+            InvalidKerasConfigurationException {
+        network = new DigitRecognitionNN();
     }
 
     /**
      * Распознает поле судоку и возвращает цифры в клетках.
+     *
      * @param image Матрица изображения.
      * @return Двумерный массив цифр в клектках. Если клетка пуста, элемент
      * равен 0.
@@ -31,84 +34,41 @@ public class DigitRecogniser {
         ArrayList<ArrayList<Integer>> result = new ArrayList<>();
 
         // Получаем прогнозы модели.
-        for(int i = 0; i < 9; ++i) {
-            result.add(new ArrayList<>());
+        for (int i = 0; i < 9; ++i) {
+            result.add(new ArrayList<Integer>());
             for (int j = 0; j < 9; ++j) {
-                // Удаляем шум с изображения.
-                removeNoise(cells.get(i).get(j));
+                Mat cell = cells.get(i).get(j);
+                removeNoise(cell);
+                cell = removeEmptySpace(cell);
 
-                // Если изображение слишком маленькое - клетка пустая.
-                if(getImageSize(cells.get(i).get(j)) < 80) {
+                if(getImageSize(cell) < 50) {
                     result.get(i).add(0);
                     continue;
                 }
 
-                // Удаляем пустые края.
-                Mat fitMat = removeEmptySpace(cells.get(i).get(j));
-                // Конвертируем для подачи в нс.
-                Mat matForNN = convertToInputForNN(fitMat);
-
-                // Получаем массив вероятностей для каждой цифры и выбираем
-                // лучший ответ.
-                Mat responses = network.predict(matForNN);
-                int response = 1;
-                for(int k = 2; k < 10; k++) {
-                    if(responses.get(k, 0)[0] > responses.get(response, 0)[0])
-                        response = k;
-                }
-                result.get(i).add(response);
+                result.get(i).add(network.predict(
+                        getInputForNN(cell)));
             }
         }
         return result;
     }
 
-    /**
-     * Выделяет поле судоку на изображении и разбивает на клетки.
-     * @param imageMatrix Матрица изображения с полем.
-     * @return Матрица матриц клеток.
-     */
-    private ArrayList<ArrayList<Mat>> getCellsFromImage(Mat imageMatrix) {
-        // Получаем чб картинку.
-        Mat grayMatrix = new Mat();
-        if (imageMatrix.channels() == 3) {
-            Imgproc.cvtColor(imageMatrix, grayMatrix, Imgproc.COLOR_BGR2GRAY);
-        } else {
-            grayMatrix = imageMatrix;
-        }
+    private INDArray getInputForNN(Mat cell) {
+        //Test.showWaitDestroy("original", cell);
 
-        // Выделяем поле.
-        Mat gridMat = GridExtractor.contourGridExtract(grayMatrix);
-
-        // Получаем бинарную матрицу. 255 - черный, 0 - белый.
-        Mat processedImage = ImageProcessor.processImage(gridMat, false);
-
-        // Удаляем линии сетки поля.
-        Mat lines = new Mat();
-        Imgproc.HoughLinesP(processedImage, lines,
-                1.0, Math.PI / 180.0, 100, 50.0, 5.0);
-        Mat gridWOLines = GridLinesRemover.removeGridLines(processedImage, lines);
-
-        // Получаем массив клеток.
-        return CellExtractor.splitGrid(gridWOLines, 9, 9);
-    }
-
-    /**
-     * Конвертирует матрицу изображения в массив для NN.
-     * @param cell Матрица изображения.
-     * @return Массив размера 28 * 28.
-     */
-    private static Mat convertToInputForNN(Mat cell) {
-        Mat resizedCell = new Mat(28, 28, CvType.CV_8U);
+        Mat resizedCell = new Mat(28, 28, CvType.CV_32F);
         Imgproc.resize(cell, resizedCell, resizedCell.size());
+        //Test.showWaitDestroy("resized", resizedCell);
 
-        Mat matForNN = new Mat(1, 28 * 28, CvType.CV_32F);
-        for (int k = 0; k < 28; ++k) {
-            for (int l = 0; l < 28; ++l) {
-                matForNN.put(0, 28 * k + l,
-                        (resizedCell.get(k, l)[0] / 255.0 * 0.99 + 0.01));
+
+        INDArray result = Nd4j.zeros(1, 28, 28, 1);
+        for(int i = 0; i < 28; ++i) {
+            for(int j = 0; j < 28; ++j) {
+                result.putScalar(new int[]{0, i, j, 0},
+                        resizedCell.get(i, j)[0] / 255.0);
             }
         }
-        return matForNN;
+        return result;
     }
 
     /**
@@ -231,5 +191,36 @@ public class DigitRecogniser {
             }
         }
         return size;
+    }
+
+    /**
+     * Выделяет поле судоку на изображении и разбивает на клетки.
+     *
+     * @param imageMatrix Матрица изображения с полем.
+     * @return Матрица матриц клеток.
+     */
+    private ArrayList<ArrayList<Mat>> getCellsFromImage(Mat imageMatrix) {
+        // Получаем чб картинку.
+        Mat grayMatrix = new Mat();
+        if (imageMatrix.channels() == 3) {
+            Imgproc.cvtColor(imageMatrix, grayMatrix, Imgproc.COLOR_BGR2GRAY);
+        } else {
+            grayMatrix = imageMatrix;
+        }
+
+        // Выделяем поле.
+        Mat gridMat = GridExtractor.contourGridExtract(grayMatrix);
+
+        // Получаем бинарную матрицу. 255 - черный, 0 - белый.
+        Mat processedImage = ImageProcessor.processImage(gridMat, false);
+
+        // Удаляем линии сетки поля.
+        Mat lines = new Mat();
+        Imgproc.HoughLinesP(processedImage, lines,
+                1.0, Math.PI / 180.0, 100, 50.0, 5.0);
+        Mat gridWOLines = GridLinesRemover.removeGridLines(processedImage, lines);
+
+        // Получаем массив клеток.
+        return CellExtractor.splitGrid(gridWOLines, 9, 9);
     }
 }

@@ -1,5 +1,3 @@
-package com.digitrecognition;
-
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
@@ -88,6 +86,4 @@ public class GridExtractor {
         result.add(rightBottomCorner);
         return result;
     }
-
-
 }

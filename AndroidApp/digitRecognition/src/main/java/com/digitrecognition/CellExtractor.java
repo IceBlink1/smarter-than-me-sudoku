@@ -1,5 +1,3 @@
-package com.digitrecognition;
-
 import org.opencv.core.Mat;
 
 import java.util.ArrayList;
@@ -18,7 +16,7 @@ public class CellExtractor {
         int width = grid.width() / cols;
         int height = grid.height() / rows;
         for(int i = 0; i < rows; ++i) {
-            result.add(new ArrayList<>());
+            result.add(new ArrayList<Mat>());
             for(int j = 0; j < cols; ++j) {
                 Mat cellMat = grid.submat(i * height, (i + 1) * height,
                         j * width, (j + 1) * width);
