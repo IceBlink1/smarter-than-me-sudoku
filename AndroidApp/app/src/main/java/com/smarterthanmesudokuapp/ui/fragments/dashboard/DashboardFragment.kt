@@ -13,9 +13,10 @@ import com.smarterthanmesudokuapp.R
 import com.smarterthanmesudokuapp.data.entities.Sudoku
 import com.smarterthanmesudokuapp.databinding.FragmentDashboardBinding
 import com.smarterthanmesudokuapp.domain.entities.SudokuVo
+import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
-class DashboardFragment : Fragment() {
+class DashboardFragment : DaggerFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory

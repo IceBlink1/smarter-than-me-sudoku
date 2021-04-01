@@ -88,4 +88,6 @@ public class GridExtractor {
         result.add(rightBottomCorner);
         return result;
     }
+
+
 }

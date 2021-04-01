@@ -11,16 +11,13 @@ import dagger.multibindings.IntoMap
 @Module
 abstract class HomeModule {
 
-    @ContributesAndroidInjector(
-        modules = [
-            ViewModelBuilder::class
-        ]
-    )
-    internal abstract fun addHomeFragment(): HomeFragment
-
+    @ContributesAndroidInjector(modules = [
+        ViewModelBuilder::class
+    ])
+    internal abstract fun homeFragment(): HomeFragment
 
     @Binds
     @IntoMap
     @ViewModelKey(HomeViewModel::class)
-    internal abstract fun bindViewModel(viewModel: HomeViewModel): ViewModel
+    abstract fun bindViewModel(viewmodel: HomeViewModel): ViewModel
 }

@@ -9,12 +9,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.navArgs
 import com.smarterthanmesudokuapp.R
 import com.smarterthanmesudokuapp.databinding.FragmentHomeBinding
 import com.smarterthanmesudokuapp.domain.entities.SudokuVo
+import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
-class HomeFragment : Fragment() {
+class HomeFragment : DaggerFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -22,6 +24,8 @@ class HomeFragment : Fragment() {
     private val homeViewModel by viewModels<HomeViewModel> { viewModelFactory }
 
     private lateinit var viewBinding: FragmentHomeBinding
+
+    private val args: HomeArguments by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,19 +40,21 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val sudoku = arguments?.getParcelable<HomeArguments>("args")?.sudoku ?: listOf(
+            listOf(1, 2, 3, 4, 5, 6, 7, 8, 9),
+            listOf(2, 3, 4, 5, 6, 7, 8, 9, 1),
+            listOf(3, 4, 5, 6, 7, 8, 9, 1, 2),
+            listOf(4, 5, 6, 7, 8, 9, 1, 2, 3),
+            listOf(5, 6, 7, 8, 9, 1, 2, 3, 4),
+            listOf(6, 7, 8, 9, 1, 2, 3, 4, 5),
+            listOf(7, 8, 9, 1, 2, 3, 4, 5, 6),
+            listOf(8, 9, 1, 2, 3, 4, 5, 6, 7),
+            listOf(9, 1, 2, 3, 4, 5, 6, 7, 8)
+        )
+
         viewBinding.sudokuView.setUp(
             SudokuVo(
-                sudoku = listOf(
-                    listOf(1, 2, 3, 4, 5, 6, 7, 8, 9),
-                    listOf(2, 3, 4, 5, 6, 7, 8, 9, 1),
-                    listOf(3, 4, 5, 6, 7, 8, 9, 1, 2),
-                    listOf(4, 5, 6, 7, 8, 9, 1, 2, 3),
-                    listOf(5, 6, 7, 8, 9, 1, 2, 3, 4),
-                    listOf(6, 7, 8, 9, 1, 2, 3, 4, 5),
-                    listOf(7, 8, 9, 1, 2, 3, 4, 5, 6),
-                    listOf(8, 9, 1, 2, 3, 4, 5, 6, 7),
-                    listOf(9, 1, 2, 3, 4, 5, 6, 7, 8)
-                ),
+                sudoku = sudoku,
                 solution = listOf(
                     listOf(1, 2, 3, 4, 5, 6, 7, 8, 9),
                     listOf(2, 3, 4, 5, 6, 7, 8, 9, 1),
@@ -64,5 +70,8 @@ class HomeFragment : Fragment() {
                 showSolutionGroup = true
             )
         )
+        homeViewModel.recognise()
+
     }
+
 }

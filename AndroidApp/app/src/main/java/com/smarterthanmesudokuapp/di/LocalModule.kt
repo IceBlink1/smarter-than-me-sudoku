@@ -6,6 +6,7 @@ import com.smarterthanmesudokuapp.data.local.SudokuLocalDataSource
 import com.smarterthanmesudokuapp.data.local.SudokuLocalMapper
 import dagger.Module
 import dagger.Provides
+import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Singleton
 
 
@@ -14,17 +15,18 @@ class LocalModule {
 
     @Singleton
     @Provides
-    fun providesProductDao(demoDatabase: SudokuDB): SudokuDao {
+    fun providesSudokuDao(demoDatabase: SudokuDB): SudokuDao {
         return demoDatabase.sudokuDao()
     }
 
     @Singleton
     @Provides
-    fun providesProductRepository(
+    fun providesSudokuRepository(
+        dispatcher: CoroutineDispatcher,
         sudokuDao: SudokuDao,
         sudokuLocalMapper: SudokuLocalMapper
     ): SudokuLocalDataSource {
-        return SudokuLocalDataSource(sudokuDao, sudokuLocalMapper)
+        return SudokuLocalDataSource(sudokuDao, dispatcher, sudokuLocalMapper)
     }
 
     @Singleton

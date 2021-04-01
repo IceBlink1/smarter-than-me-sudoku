@@ -16,6 +16,10 @@ public class DigitRecogniser {
         network = new NeuralNetwork("result200-0.100000-1norm.txt");
     }
 
+    public DigitRecogniser(String path) throws IOException {
+        network = new NeuralNetwork(path);
+    }
+
     /**
      * Распознает поле судоку и возвращает цифры в клетках.
      * @param image Матрица изображения.
