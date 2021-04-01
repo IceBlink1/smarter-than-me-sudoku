@@ -1,3 +1,5 @@
+package com.digitrecognition;
+
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;

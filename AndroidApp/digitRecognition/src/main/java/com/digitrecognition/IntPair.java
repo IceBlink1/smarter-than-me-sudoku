@@ -1,3 +1,5 @@
+package com.digitrecognition;
+
 public class IntPair {
     public final int first;
     public final int second;
