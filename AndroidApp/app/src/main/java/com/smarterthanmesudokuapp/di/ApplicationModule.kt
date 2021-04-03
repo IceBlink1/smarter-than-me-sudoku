@@ -1,13 +1,15 @@
 package com.smarterthanmesudokuapp.di
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.room.Room
+import com.smarterthanmesudokuapp.data.SudokuDataMapper
 import com.smarterthanmesudokuapp.data.SudokuDataSource
 import com.smarterthanmesudokuapp.data.local.SudokuDB
 import com.smarterthanmesudokuapp.data.local.SudokuLocalDataSource
-import com.smarterthanmesudokuapp.data.local.SudokuLocalMapper
-import com.smarterthanmesudokuapp.data.remote.SudokuApi
-import com.smarterthanmesudokuapp.data.remote.SudokuRemoteDataSource
+import com.smarterthanmesudokuapp.data.remote.*
+import com.smarterthanmesudokuapp.repository.AuthRepository
+import com.smarterthanmesudokuapp.repository.DefaultAuthRepository
 import com.smarterthanmesudokuapp.repository.DefaultSudokuRepository
 import com.smarterthanmesudokuapp.repository.SudokuRepository
 import dagger.Binds
@@ -17,6 +19,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Qualifier
 import javax.inject.Singleton
+
 
 @Module(includes = [ApplicationModuleBinds::class])
 object ApplicationModule {
@@ -32,24 +35,42 @@ object ApplicationModule {
     @Singleton
     @SudokuRemoteDataSource
     @Provides
-    fun provideTasksRemoteDataSource(sudokuApi: SudokuApi): SudokuDataSource {
+    fun provideSudokuRemoteDataSource(
+        sudokuApi: SudokuApi,
+        authRepository: AuthRepository,
+        mapper: SudokuDataMapper
+    ): SudokuDataSource {
         return SudokuRemoteDataSource(
-            sudokuApi
+            sudokuApi,
+            authRepository = authRepository,
+            mapper = mapper
         )
     }
 
     @Singleton
     @SudokuLocalDataSource
     @Provides
-    fun provideTasksLocalDataSource(
+    fun provideSudokuLocalDataSource(
         database: SudokuDB,
         ioDispatcher: CoroutineDispatcher,
-        mapper: SudokuLocalMapper
+        mapper: SudokuDataMapper
     ): SudokuDataSource {
         return SudokuLocalDataSource(
             database.sudokuDao(),
             ioDispatcher,
             mapper
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideAuthDataSource(
+        api: AuthApi,
+        sharedPreferences: SharedPreferences
+    ): AuthDataSource {
+        return DefaultAuthDataSource(
+            api,
+            sharedPreferences = sharedPreferences
         )
     }
 
@@ -66,6 +87,14 @@ object ApplicationModule {
     @Singleton
     @Provides
     fun provideIoDispatcher() = Dispatchers.IO
+
+    @Provides
+    @Singleton
+    fun provideSharedPreference(context: Context): SharedPreferences {
+        return context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE)
+    }
+
+    private const val PREF_FILE_NAME = "prefs.prfs"
 }
 
 @Module
@@ -73,5 +102,9 @@ abstract class ApplicationModuleBinds {
 
     @Singleton
     @Binds
-    abstract fun bindRepository(repo: DefaultSudokuRepository): SudokuRepository
+    abstract fun bindSudokuRepository(repo: DefaultSudokuRepository): SudokuRepository
+
+    @Singleton
+    @Binds
+    abstract fun bindAuthRepository(repo: DefaultAuthRepository): AuthRepository
 }

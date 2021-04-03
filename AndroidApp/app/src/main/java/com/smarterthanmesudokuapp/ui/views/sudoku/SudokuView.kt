@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.smarterthanmesudokuapp.R
 import com.smarterthanmesudokuapp.databinding.ViewSudokuBinding
 import com.smarterthanmesudokuapp.domain.entities.SudokuVo
-import com.smarterthanmesudokuapp.ui.views.utils.visible
+import com.smarterthanmesudokuapp.utils.visible
 import com.xwray.groupie.GroupieAdapter
 import com.xwray.groupie.OnItemClickListener
 import com.xwray.groupie.Section

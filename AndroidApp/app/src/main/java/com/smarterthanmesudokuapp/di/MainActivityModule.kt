@@ -1,8 +1,6 @@
 package com.smarterthanmesudokuapp.di
 
 import com.smarterthanmesudokuapp.ui.fragments.home.HomeFragment
-import com.smarterthanmesudokuapp.ui.fragments.home.HomeViewModel
-import dagger.Binds
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

@@ -3,6 +3,7 @@ package com.smarterthanmesudokuapp.ui.fragments.home
 import androidx.lifecycle.ViewModel
 import com.smarterthanmesudokuapp.di.ViewModelBuilder
 import com.smarterthanmesudokuapp.di.ViewModelKey
+import com.smarterthanmesudokuapp.ui.fragments.login.LoginViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -19,5 +20,5 @@ abstract class HomeModule {
     @Binds
     @IntoMap
     @ViewModelKey(HomeViewModel::class)
-    abstract fun bindViewModel(viewmodel: HomeViewModel): ViewModel
+    abstract fun bindHomeViewModel(viewmodel: HomeViewModel): ViewModel
 }

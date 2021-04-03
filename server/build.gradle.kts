@@ -23,9 +23,9 @@ repositories {
 }
 
 dependencies {
-	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-	implementation("org.springframework.boot:spring-boot-starter-security")
-	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa:2.4.1")
+	implementation("org.springframework.boot:spring-boot-starter-security:2.4.1")
+	implementation("org.springframework.boot:spring-boot-starter-web:2.4.1")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
@@ -37,9 +37,9 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	runtimeOnly("org.postgresql:postgresql:42.2.18")
 	annotationProcessor("org.projectlombok:lombok")
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	testImplementation("org.springframework.security:spring-security-test")
-	implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
+	testImplementation("org.springframework.boot:spring-boot-starter-test:2.4.1")
+	testImplementation("org.springframework.security:spring-security-test:2.4.1")
+	implementation("org.springframework.boot:spring-boot-starter-oauth2-client:2.4.1")
 	implementation("com.vladmihalcea:hibernate-types-52:2.10.2")
 }
 

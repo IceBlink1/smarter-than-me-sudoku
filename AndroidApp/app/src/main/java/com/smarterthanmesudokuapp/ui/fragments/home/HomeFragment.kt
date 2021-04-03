@@ -5,14 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.smarterthanmesudokuapp.R
 import com.smarterthanmesudokuapp.databinding.FragmentHomeBinding
 import com.smarterthanmesudokuapp.domain.entities.SudokuVo
+import com.smarterthanmesudokuapp.ui.fragments.login.LoginViewModel
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -22,6 +25,8 @@ class HomeFragment : DaggerFragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private val homeViewModel by viewModels<HomeViewModel> { viewModelFactory }
+
+    private val loginViewModel: LoginViewModel by viewModels { viewModelFactory }
 
     private lateinit var viewBinding: FragmentHomeBinding
 
@@ -70,8 +75,9 @@ class HomeFragment : DaggerFragment() {
                 showSolutionGroup = true
             )
         )
-        homeViewModel.recognise()
-
+        if (loginViewModel.loginCached() == null) {
+            findNavController().navigate(R.id.action_navigation_home_to_navigation_login)
+        }
     }
 
 }

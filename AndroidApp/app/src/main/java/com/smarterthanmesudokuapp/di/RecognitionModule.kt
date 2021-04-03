@@ -3,11 +3,10 @@ package com.smarterthanmesudokuapp.di
 import android.content.Context
 import com.digitrecognition.DigitRecogniser
 import com.digitrecognition.GridExtractor
-import com.smarterthanmesudokuapp.ui.views.utils.ContourExtractor
-import com.smarterthanmesudokuapp.ui.views.utils.FuncUtils.assetFilePath
+import com.smarterthanmesudokuapp.utils.ContourExtractor
+import com.smarterthanmesudokuapp.utils.FuncUtils.assetFilePath
 import dagger.Module
 import dagger.Provides
-import org.opencv.android.OpenCVLoader
 import javax.inject.Singleton
 
 @Module

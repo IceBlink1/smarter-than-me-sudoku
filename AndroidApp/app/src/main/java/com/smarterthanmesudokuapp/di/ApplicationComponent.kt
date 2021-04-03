@@ -1,16 +1,19 @@
 package com.smarterthanmesudokuapp.di
 
 import android.content.Context
+import android.content.SharedPreferences
 import com.smarterthanmesudokuapp.SudokuApplication
 import com.smarterthanmesudokuapp.ui.fragments.camera.CameraModule
 import com.smarterthanmesudokuapp.ui.fragments.dashboard.DashboardModule
 import com.smarterthanmesudokuapp.ui.fragments.home.HomeModule
+import com.smarterthanmesudokuapp.ui.fragments.login.LoginModule
 import com.smarterthanmesudokuapp.ui.fragments.notifications.NotificationsModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
+
 
 @Singleton
 @Component(
@@ -24,7 +27,8 @@ import javax.inject.Singleton
         RecognitionModule::class,
         DashboardModule::class,
         NotificationsModule::class,
-        CameraModule::class
+        CameraModule::class,
+        LoginModule::class
     ]
 )
 interface ApplicationComponent : AndroidInjector<SudokuApplication> {
@@ -33,4 +37,6 @@ interface ApplicationComponent : AndroidInjector<SudokuApplication> {
     interface Factory {
         fun create(@BindsInstance applicationContext: Context): ApplicationComponent
     }
+
+    fun prefManager(): SharedPreferences
 }

@@ -21,11 +21,11 @@ class SudokuCardItem(var cellValue: Int, val correctValue: Int, val showBorders:
 
     override fun bind(viewBinding: ItemSudokuCardBinding, position: Int) {
         binding = viewBinding
-        updateCellValue(cellValue)
+        setUpCell()
     }
 
     fun updateCellValue(newValue: Int) {
-        if (newValue in 1..9) {
+        if (newValue in 1..9 && newValue != cellValue) {
             cellValue = newValue
             binding?.numberTextView?.text = cellValue.toString()
             if (newValue == correctValue) {
@@ -33,12 +33,24 @@ class SudokuCardItem(var cellValue: Int, val correctValue: Int, val showBorders:
             } else {
                 binding?.numberTextView?.setTextColor(redColor)
             }
-            if (showBorders) {
-                binding?.cellCardView?.strokeWidth = twoDp
-                binding?.cellCardView?.strokeColor = blackColor
-            }
+        } else {
+            binding?.numberTextView?.text = ""
+        }
+
+        if (showBorders) {
+            binding?.cellCardView?.strokeWidth = twoDp
+            binding?.cellCardView?.strokeColor = blackColor
         }
         binding?.cellCardView?.invalidate()
+    }
+
+    fun setUpCell() {
+        binding?.numberTextView?.text = cellValue.toString()
+
+        if (showBorders) {
+            binding?.cellCardView?.strokeWidth = twoDp
+            binding?.cellCardView?.strokeColor = blackColor
+        }
     }
 
     fun setSelected() {

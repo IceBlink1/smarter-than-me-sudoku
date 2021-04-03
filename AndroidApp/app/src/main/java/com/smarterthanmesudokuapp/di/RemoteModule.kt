@@ -1,8 +1,10 @@
 package com.smarterthanmesudokuapp.di
 
+import com.smarterthanmesudokuapp.data.SudokuDataMapper
 import com.smarterthanmesudokuapp.data.remote.AuthApi
 import com.smarterthanmesudokuapp.data.remote.SudokuApi
 import com.smarterthanmesudokuapp.data.remote.SudokuRemoteDataSource
+import com.smarterthanmesudokuapp.repository.AuthRepository
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -43,8 +45,12 @@ class RemoteModule {
     }
 
     @Provides
-    fun providesSudokuRemoteDataSource(sudokuApi: SudokuApi): SudokuRemoteDataSource {
-        return SudokuRemoteDataSource(sudokuApi)
+    fun providesSudokuRemoteDataSource(
+        sudokuApi: SudokuApi,
+        authRepository: AuthRepository,
+        mapper: SudokuDataMapper
+    ): SudokuRemoteDataSource {
+        return SudokuRemoteDataSource(sudokuApi, authRepository = authRepository, mapper = mapper)
     }
 
 }

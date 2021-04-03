@@ -1,10 +1,8 @@
-package com.smarterthanmesudokuapp.ui.views.utils
+package com.smarterthanmesudokuapp.utils
 
 import android.content.Context
 import android.util.AttributeSet
-import androidx.cardview.widget.CardView
 import com.google.android.material.card.MaterialCardView
-import kotlin.math.min
 
 class SquareCardView : MaterialCardView {
     constructor(context: Context) : super(context)

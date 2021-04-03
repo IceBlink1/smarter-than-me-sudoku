@@ -1,9 +1,9 @@
 package com.smarterthanmesudokuapp.ui.fragments.camera
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.os.Handler
 import android.os.HandlerThread
-import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.SurfaceView
 import android.view.View
@@ -12,13 +12,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.digitrecognition.DigitRecogniser
-import com.digitrecognition.GridExtractor
 import com.smarterthanmesudokuapp.R
 import com.smarterthanmesudokuapp.databinding.FragmentCameraBinding
 import com.smarterthanmesudokuapp.ui.fragments.home.HomeArguments
-import com.smarterthanmesudokuapp.ui.views.utils.ContourExtractor
-import com.smarterthanmesudokuapp.ui.views.utils.disable
-import com.smarterthanmesudokuapp.ui.views.utils.enable
+import com.smarterthanmesudokuapp.utils.ContourExtractor
+import com.smarterthanmesudokuapp.utils.disable
+import com.smarterthanmesudokuapp.utils.enable
 import dagger.android.support.DaggerFragment
 import org.opencv.android.CameraBridgeViewBase
 import org.opencv.core.*
@@ -69,6 +68,12 @@ class CameraFragment : DaggerFragment(), CameraBridgeViewBase.CvCameraViewListen
 
         viewDataBinding.captureButton.setOnClickListener {
             if (sudokuBoardMat != null) {
+                Core.rotate(sudokuBoardMat, sudokuBoardMat, Core.ROTATE_90_CLOCKWISE)
+                val originalSudokuBitmap = Bitmap.createBitmap(
+                    sudokuBoardMat!!.width(),
+                    sudokuBoardMat!!.height(),
+                    Bitmap.Config.ARGB_8888
+                )
                 val sudoku = digitRecogniser.recognise(sudokuBoardMat)
                 findNavController().navigate(
                     R.id.action_navigation_camera_to_navigation_home,
@@ -194,7 +199,7 @@ class CameraFragment : DaggerFragment(), CameraBridgeViewBase.CvCameraViewListen
             20,
             3
         )
-        Imgproc.drawContours(ogRGBMat, realContours, indexOfBoard, Scalar(255.0, 0.0, 255.0), 3)
+        Imgproc.drawContours(ogRGBMat, realContours, indexOfBoard, Scalar(100.0, 0.0, 255.0), 3)
 
         try {
             val boundingRect = Imgproc.boundingRect(realContours[indexOfBoard])
@@ -210,8 +215,6 @@ class CameraFragment : DaggerFragment(), CameraBridgeViewBase.CvCameraViewListen
         } catch (e: Exception) {
             e.printStackTrace()
         }
-
-//        threshMat.release()
 
         return ogRGBMat
     }

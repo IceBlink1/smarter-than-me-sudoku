@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.smarterthanmesudokuapp.ui.views.utils.SquareCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.smarterthanmesudokuapp.utils.SquareCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cellCardView"
     xmlns:tools="http://schemas.android.com/tools"
@@ -16,4 +16,4 @@
         android:textAppearance="@style/AppTheme.Text"
         tools:text="9" />
 
-</com.smarterthanmesudokuapp.ui.views.utils.SquareCardView>
+</com.smarterthanmesudokuapp.utils.SquareCardView>

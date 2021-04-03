@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_nav_home_to_nav_notifications"
             app:destination="@id/navigation_notifications" />
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_login"
+            app:destination="@id/navigation_login" />
     </fragment>
 
     <fragment
@@ -55,6 +58,16 @@
         tools:layout="@layout/fragment_camera">
         <action
             android:id="@+id/action_navigation_camera_to_navigation_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_login"
+        android:name="com.smarterthanmesudokuapp.ui.fragments.login.LoginFragment"
+        android:label="login"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_navigation_login_to_navigation_home"
             app:destination="@id/navigation_home" />
     </fragment>
 </navigation>

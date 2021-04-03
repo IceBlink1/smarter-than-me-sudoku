@@ -1,4 +1,4 @@
-package com.smarterthanmesudokuapp.ui.views.utils
+package com.smarterthanmesudokuapp.utils
 
 import org.opencv.core.Point
 

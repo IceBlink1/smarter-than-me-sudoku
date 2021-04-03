@@ -9,15 +9,21 @@ import androidx.room.Query
 interface SudokuDao {
 
     @Query("SELECT * FROM sudoku")
-    fun getAll(): List<SudokuDto>
+    suspend fun getAll(): List<SudokuDto>
 
-    @Query("SELECT * FROM sudoku WHERE id IN (:userIds)")
-    fun loadAllByIds(userIds: IntArray): List<SudokuDto>
+    @Query("SELECT * FROM sudoku WHERE id IN (:sudokuIds)")
+    suspend fun loadAllByIds(sudokuIds: IntArray): List<SudokuDto>
+
+    @Query("SELECT * FROM sudoku WHERE id = :sudokuId")
+    suspend fun getSudokuById(sudokuId: Long): SudokuDto?
 
     @Insert
-    fun insertAll(vararg users: SudokuDto)
+    suspend fun insertAll(vararg sudokus: SudokuDto)
 
-    @Delete
-    fun delete(user: SudokuDto)
+    @Query("DELETE FROM sudoku WHERE id = :sudokuId")
+    suspend fun delete(sudokuId: Long)
+
+    @Query("DELETE FROM sudoku")
+    suspend fun deleteAll()
 
 }
