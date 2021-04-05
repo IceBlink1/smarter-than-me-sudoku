@@ -30,9 +30,9 @@ import javax.persistence.PersistenceException
 @Import(SecurityConfig::class)
 class AuthenticationRestControllerV1
 @Autowired constructor(
-        @Autowired val authenticationManager: AuthenticationManager,
-        @Autowired val jwtTokenProvider: JwtTokenProvider,
-        @Autowired val userService: UserService
+    @Autowired val authenticationManager: AuthenticationManager,
+    @Autowired val jwtTokenProvider: JwtTokenProvider,
+    @Autowired val userService: UserService
 ) {
     @PostMapping("unlogged/login")
     fun login(@RequestBody requestDto: AuthRequestDto): ResponseEntity<Any?> {
@@ -40,7 +40,7 @@ class AuthenticationRestControllerV1
             val username = requestDto.username
             authenticationManager.authenticate(UsernamePasswordAuthenticationToken(username, requestDto.password))
             val user = username?.let { userService.findByUsername(it) }
-                    ?: throw UsernameNotFoundException("User with username $username not found")
+                ?: throw UsernameNotFoundException("User with username $username not found")
             val token = jwtTokenProvider.createToken(username, user.roles)
             val response = mutableMapOf<Any?, Any?>()
             response.put("username", username)
@@ -52,7 +52,7 @@ class AuthenticationRestControllerV1
     }
 
     @PostMapping("unlogged/register")
-    fun register(@RequestBody request: RegisterRequestDto): ResponseEntity<String> {
+    fun register(@RequestBody request: RegisterRequestDto): ResponseEntity<Any?> {
         val user = User().apply {
             username = request.username
             password = request.password
@@ -67,7 +67,7 @@ class AuthenticationRestControllerV1
             response.put("username", request.username)
             val token = jwtTokenProvider.createToken(request.username, user.roles)
             response.put("token", token)
-            ResponseEntity(HttpStatus.CREATED)
+            ResponseEntity.status(HttpStatus.CREATED).body(response)
         } catch (pe: PersistenceException) {
             if (user.username == null) {
                 ResponseEntity(HttpStatus.BAD_REQUEST)

@@ -1,4 +1,4 @@
-package com.smarterthanmesudokuapp.ui.fragments.login
+package com.smarterthanmesudokuapp.ui.fragments.auth.login
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -30,6 +30,7 @@ class LoginViewModel @Inject constructor(
             val auth = authRepository.authenticate(login, password)
             if (auth is Success) {
                 loginMutableLiveData.postValue(auth.data)
+                loginStateMutableLiveData.postValue(AuthState.AUTHENTICATED)
             } else if (auth is Error) {
                 Timber.e(auth.exception)
             }
@@ -43,9 +44,11 @@ class LoginViewModel @Inject constructor(
     fun refreshToken() {
         if (loginCached() != null) {
             viewModelScope.launch {
-                val auth = authRepository.refreshToken()
-                when (auth) {
-                    is Success -> loginStateMutableLiveData.postValue(AuthState.AUTHENTICATED)
+                when (val auth = authRepository.refreshToken()) {
+                    is Success -> {
+                        loginStateMutableLiveData.postValue(AuthState.AUTHENTICATED)
+                        loginMutableLiveData.postValue(auth.data)
+                    }
                     is Error -> loginStateMutableLiveData.postValue(AuthState.NOT_AUTHENTICATED)
                 }
             }
