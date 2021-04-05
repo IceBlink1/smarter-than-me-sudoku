@@ -1,4 +1,4 @@
-package com.smarterthanmesudokuapp.repository
+package com.smarterthanmesudokuapp.repository.sudoku
 
 import com.smarterthanmesudokuapp.data.Result
 import com.smarterthanmesudokuapp.data.Result.Success
@@ -60,7 +60,13 @@ class DefaultSudokuRepository @Inject constructor(
 
     private fun cacheSudoku(sudoku: Sudoku): Sudoku {
         val cachedSudoku =
-            Sudoku(sudoku.id, sudoku.originalSudoku, sudoku.solution, sudoku.complexity)
+            Sudoku(
+                sudoku.id,
+                sudoku.originalSudoku,
+                sudoku.currentSudoku,
+                sudoku.solution,
+                sudoku.complexity
+            )
         // Create if it doesn't exist.
         if (cache == null) {
             cache = ConcurrentHashMap()

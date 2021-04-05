@@ -4,7 +4,7 @@ import com.smarterthanmesudokuapp.data.SudokuDataMapper
 import com.smarterthanmesudokuapp.data.remote.AuthApi
 import com.smarterthanmesudokuapp.data.remote.SudokuApi
 import com.smarterthanmesudokuapp.data.remote.SudokuRemoteDataSource
-import com.smarterthanmesudokuapp.repository.AuthRepository
+import com.smarterthanmesudokuapp.repository.auth.AuthRepository
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient

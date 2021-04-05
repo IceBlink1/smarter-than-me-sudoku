@@ -8,10 +8,10 @@ import com.smarterthanmesudokuapp.data.SudokuDataSource
 import com.smarterthanmesudokuapp.data.local.SudokuDB
 import com.smarterthanmesudokuapp.data.local.SudokuLocalDataSource
 import com.smarterthanmesudokuapp.data.remote.*
-import com.smarterthanmesudokuapp.repository.AuthRepository
-import com.smarterthanmesudokuapp.repository.DefaultAuthRepository
-import com.smarterthanmesudokuapp.repository.DefaultSudokuRepository
-import com.smarterthanmesudokuapp.repository.SudokuRepository
+import com.smarterthanmesudokuapp.repository.auth.AuthRepository
+import com.smarterthanmesudokuapp.repository.auth.DefaultAuthRepository
+import com.smarterthanmesudokuapp.repository.sudoku.DefaultSudokuRepository
+import com.smarterthanmesudokuapp.repository.sudoku.SudokuRepository
 import dagger.Binds
 import dagger.Module
 import dagger.Provides

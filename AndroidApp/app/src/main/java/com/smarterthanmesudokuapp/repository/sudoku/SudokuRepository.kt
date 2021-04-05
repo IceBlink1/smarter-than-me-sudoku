@@ -1,4 +1,4 @@
-package com.smarterthanmesudokuapp.repository
+package com.smarterthanmesudokuapp.repository.sudoku
 
 import com.smarterthanmesudokuapp.data.Result
 import com.smarterthanmesudokuapp.data.entities.Sudoku

@@ -2,6 +2,7 @@ package com.smarterthanmesudokuapp.data
 
 import com.smarterthanmesudokuapp.data.entities.Sudoku
 import com.smarterthanmesudokuapp.data.local.SudokuDto
+import com.smarterthanmesudokuapp.data.remote.post.SudokuPost
 import com.smarterthanmesudokuapp.data.remote.response.SudokuResponseItem
 
 class SudokuDataMapper {
@@ -11,7 +12,8 @@ class SudokuDataMapper {
                 id = sudokuDto.id,
                 originalSudoku = sudokuDto.originalSudoku,
                 solution = sudokuDto.solution,
-                complexity = sudokuDto.complexity
+                complexity = sudokuDto.complexity,
+                currentSudoku = sudokuDto.currentSudoku
             )
         }
     }
@@ -21,7 +23,16 @@ class SudokuDataMapper {
             id = 0,
             originalSudoku = sudokuResponseItem.originalSudoku,
             solution = sudokuResponseItem.solution,
-            complexity = sudokuResponseItem.complexity
+            complexity = sudokuResponseItem.complexity,
+            currentSudoku = sudokuResponseItem.currentSudoku
+        )
+    }
+
+    fun toPostModel(sudoku: Sudoku): SudokuPost {
+        return SudokuPost(
+            originalSudoku = sudoku.originalSudoku,
+            solution = sudoku.solution,
+            complexity = sudoku.complexity
         )
     }
 
@@ -31,7 +42,8 @@ class SudokuDataMapper {
             originalSudoku = sudoku.originalSudoku,
             solution = sudoku.solution,
             complexity = sudoku.complexity,
-            remoteId = null
+            remoteId = null,
+            currentSudoku = sudoku.currentSudoku
         )
     }
 }

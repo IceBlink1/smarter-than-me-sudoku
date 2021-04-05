@@ -21,8 +21,10 @@ import androidx.lifecycle.ViewModelProvider
 import dagger.Binds
 import dagger.MapKey
 import dagger.Module
+import java.util.concurrent.ConcurrentMap
 import javax.inject.Inject
 import javax.inject.Provider
+import javax.inject.Singleton
 import kotlin.reflect.KClass
 
 /**
@@ -31,6 +33,7 @@ import kotlin.reflect.KClass
 class ViewModelFactory @Inject constructor(
     private val creators: @JvmSuppressWildcards Map<Class<out ViewModel>, Provider<ViewModel>>
 ) : ViewModelProvider.Factory {
+
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         var creator: Provider<out ViewModel>? = creators[modelClass]
         if (creator == null) {
@@ -55,6 +58,7 @@ class ViewModelFactory @Inject constructor(
 
 @Module
 internal abstract class ViewModelBuilder {
+//    @Singleton
     @Binds
     internal abstract fun bindViewModelFactory(
         factory: ViewModelFactory

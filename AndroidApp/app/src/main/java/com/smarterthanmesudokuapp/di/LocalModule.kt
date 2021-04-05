@@ -4,6 +4,7 @@ import com.smarterthanmesudokuapp.data.local.SudokuDB
 import com.smarterthanmesudokuapp.data.local.SudokuDao
 import com.smarterthanmesudokuapp.data.local.SudokuLocalDataSource
 import com.smarterthanmesudokuapp.data.SudokuDataMapper
+import com.smarterthanmesudokuapp.domain.mappers.SudokuMapper
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.CoroutineDispatcher
@@ -34,5 +35,9 @@ class LocalModule {
     fun providesSudokuLocalMapper(): SudokuDataMapper {
         return SudokuDataMapper()
     }
+
+
+    @Provides
+    fun providesSudokuMapper(): SudokuMapper = SudokuMapper()
 
 }

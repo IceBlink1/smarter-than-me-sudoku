@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.smarterthanmesudokuapp.SudokuApplication
 import com.smarterthanmesudokuapp.ui.fragments.camera.CameraModule
-import com.smarterthanmesudokuapp.ui.fragments.dashboard.DashboardModule
+import com.smarterthanmesudokuapp.ui.fragments.sudoku.SudokuModule
 import com.smarterthanmesudokuapp.ui.fragments.home.HomeModule
 import com.smarterthanmesudokuapp.ui.fragments.login.LoginModule
 import com.smarterthanmesudokuapp.ui.fragments.notifications.NotificationsModule
@@ -25,7 +25,7 @@ import javax.inject.Singleton
         LocalModule::class,
         RemoteModule::class,
         RecognitionModule::class,
-        DashboardModule::class,
+        SudokuModule::class,
         NotificationsModule::class,
         CameraModule::class,
         LoginModule::class

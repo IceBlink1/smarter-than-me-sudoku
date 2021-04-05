@@ -81,7 +81,7 @@ class AuthenticationRestControllerV1
     fun refreshToken(): ResponseEntity<Any?> {
         val user = getUser() ?: return ResponseEntity(HttpStatus.NOT_FOUND)
         val token = jwtTokenProvider.createToken(user.username, user.roles)
-        return ResponseEntity.ok(mutableMapOf<Any, Any>("token" to token))
+        return ResponseEntity.ok(mutableMapOf<Any, Any?>("token" to token, "username" to user.username))
     }
 
     private fun getUser(): User? {

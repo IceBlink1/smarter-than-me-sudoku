@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.digitrecognition.DigitRecogniser
 import com.smarterthanmesudokuapp.R
 import com.smarterthanmesudokuapp.databinding.FragmentCameraBinding
+import com.smarterthanmesudokuapp.domain.entities.SudokuVo
 import com.smarterthanmesudokuapp.ui.fragments.home.HomeArguments
 import com.smarterthanmesudokuapp.utils.ContourExtractor
 import com.smarterthanmesudokuapp.utils.disable
@@ -80,7 +81,13 @@ class CameraFragment : DaggerFragment(), CameraBridgeViewBase.CvCameraViewListen
                     Bundle().apply {
                         putParcelable(
                             "args", HomeArguments(
-                                sudoku
+                                SudokuVo(
+                                    sudoku = sudoku,
+                                    solution = sudoku,
+                                    complexity = 2,
+                                    currentSudoku = sudoku,
+                                    showSolutionGroup = true
+                                )
                             )
                         )
                     }

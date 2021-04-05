@@ -45,8 +45,9 @@ class SudokuCardItem(var cellValue: Int, val correctValue: Int, val showBorders:
     }
 
     fun setUpCell() {
-        binding?.numberTextView?.text = cellValue.toString()
-
+        if (cellValue in 1..9) {
+            binding?.numberTextView?.text = cellValue.toString()
+        }
         if (showBorders) {
             binding?.cellCardView?.strokeWidth = twoDp
             binding?.cellCardView?.strokeColor = blackColor

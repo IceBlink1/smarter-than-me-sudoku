@@ -9,9 +9,11 @@ class SudokuMapper {
 
     fun mapModelToResponse(sudoku: Sudoku): SudokuResponse {
         return SudokuResponse(
-                originalSudoku = sudoku.originalSudoku,
-                solution = sudoku.solution,
-                authorUserId = sudoku.user?.id
+            originalSudoku = sudoku.originalSudoku,
+            solution = sudoku.solution,
+            authorUserId = sudoku.user?.id,
+            currentSudoku = sudoku.currentSudoku,
+            complexity = sudoku.complexity
         )
     }
 

@@ -75,4 +75,23 @@ class DefaultAuthDataSource @Inject constructor(
     override suspend fun recoverPassword(email: String): Result<AuthResponse> {
         TODO("Not yet implemented")
     }
+
+    override suspend fun refreshToken(token: String): Result<AuthResponse> {
+        return withContext(dispatcher) {
+            val rsp = api.refreshToken(
+                "Bearer_" + token
+            )
+            val body = rsp.body()
+            if (rsp.isSuccessful && body != null) {
+                putToken(body.token)
+                return@withContext Success(body)
+            } else {
+                return@withContext Error(
+                    Exception(
+                        "Error code: ${rsp.code()}.\nMessage: ${rsp.message()}"
+                    )
+                )
+            }
+        }
+    }
 }

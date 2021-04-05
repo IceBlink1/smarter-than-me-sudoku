@@ -10,10 +10,10 @@ import javax.persistence.*
 @Table(name = "sudoku")
 @Data
 @TypeDef(
-        name = "list-array",
-        typeClass = ListArrayType::class
-        )
-class Sudoku: BaseEntity() {
+    name = "list-array",
+    typeClass = ListArrayType::class
+)
+class Sudoku : BaseEntity() {
     @Column(name = "original_sudoku")
     var originalSudoku: String? = null
 
@@ -25,4 +25,7 @@ class Sudoku: BaseEntity() {
 
     @Column(name = "complexity")
     var complexity: Int? = null
+
+    @Column(name = "currentSudoku")
+    val currentSudoku: String? = null
 }

@@ -1,4 +1,4 @@
-package com.smarterthanmesudokuapp.repository
+package com.smarterthanmesudokuapp.repository.auth
 
 import com.smarterthanmesudokuapp.data.Result
 import com.smarterthanmesudokuapp.data.remote.response.AuthResponse
@@ -11,4 +11,6 @@ interface AuthRepository {
     suspend fun recoverPassword(email: String): Result<AuthResponse>
 
     fun getCachedToken(): String?
+
+    suspend fun refreshToken() : Result<AuthResponse>
 }

@@ -24,7 +24,7 @@ import org.opencv.android.LoaderCallbackInterface
 import org.opencv.android.OpenCVLoader
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity() {
+class MainActivity @Inject constructor() : DaggerAppCompatActivity() {
 
     lateinit var navController: NavController
 
@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications
+                R.id.navigation_home, R.id.navigation_sudoku, R.id.navigation_notifications
             )
         )
 

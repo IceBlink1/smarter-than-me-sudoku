@@ -11,4 +11,5 @@ interface AuthDataSource {
 
     suspend fun recoverPassword(email: String) : Result<AuthResponse>
 
+    suspend fun refreshToken(token: String) : Result<AuthResponse>
 }

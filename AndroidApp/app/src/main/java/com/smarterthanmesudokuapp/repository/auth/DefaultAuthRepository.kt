@@ -1,13 +1,14 @@
-package com.smarterthanmesudokuapp.repository
+package com.smarterthanmesudokuapp.repository.auth
 
 import android.content.SharedPreferences
 import com.smarterthanmesudokuapp.data.Result
+import com.smarterthanmesudokuapp.data.Result.Error
 import com.smarterthanmesudokuapp.data.remote.AuthDataSource
 import com.smarterthanmesudokuapp.data.remote.response.AuthResponse
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.util.concurrent.ConcurrentMap
+import java.lang.Exception
 import javax.inject.Inject
 
 class DefaultAuthRepository @Inject constructor(
@@ -38,6 +39,14 @@ class DefaultAuthRepository @Inject constructor(
 
     override fun getCachedToken(): String? {
         return sharedPreferences.getString("token", null)
+    }
+
+    override suspend fun refreshToken(): Result<AuthResponse> {
+        return withContext(dispatcher) {
+            val token = getCachedToken()
+                ?: return@withContext Error(Exception("Error: cached token is null"))
+            return@withContext dataSource.refreshToken(token)
+        }
     }
 
 

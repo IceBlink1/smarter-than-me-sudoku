@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.smarterthanmesudokuapp.R
 import com.smarterthanmesudokuapp.databinding.FragmentLoginBinding
+import com.smarterthanmesudokuapp.ui.MainActivity
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -22,7 +23,7 @@ class LoginFragment : DaggerFragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private val viewModel: LoginViewModel by viewModels { viewModelFactory }
+    private val viewModel: LoginViewModel by viewModels({ activity as MainActivity }) { viewModelFactory }
 
     private lateinit var binding: FragmentLoginBinding
 

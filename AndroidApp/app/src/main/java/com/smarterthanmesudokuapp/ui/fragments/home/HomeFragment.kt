@@ -15,6 +15,7 @@ import androidx.navigation.fragment.navArgs
 import com.smarterthanmesudokuapp.R
 import com.smarterthanmesudokuapp.databinding.FragmentHomeBinding
 import com.smarterthanmesudokuapp.domain.entities.SudokuVo
+import com.smarterthanmesudokuapp.ui.MainActivity
 import com.smarterthanmesudokuapp.ui.fragments.login.LoginViewModel
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
@@ -26,7 +27,7 @@ class HomeFragment : DaggerFragment() {
 
     private val homeViewModel by viewModels<HomeViewModel> { viewModelFactory }
 
-    private val loginViewModel: LoginViewModel by viewModels { viewModelFactory }
+    private val loginViewModel: LoginViewModel by viewModels({ activity as MainActivity }) { viewModelFactory }
 
     private lateinit var viewBinding: FragmentHomeBinding
 
@@ -45,7 +46,19 @@ class HomeFragment : DaggerFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val sudoku = arguments?.getParcelable<HomeArguments>("args")?.sudoku ?: listOf(
+        loginViewModel.loginStateLiveData.observe(viewLifecycleOwner) {
+            if (it == LoginViewModel.AuthState.NOT_AUTHENTICATED) {
+                findNavController()
+                    .navigate(R.id.action_navigation_home_to_navigation_login)
+            }
+        }
+        loginViewModel.refreshToken()
+        if (loginViewModel.loginCached() == null) {
+            findNavController().navigate(R.id.action_navigation_home_to_navigation_login)
+        }
+
+        val sudokuVo = arguments?.getParcelable<HomeArguments>("args")
+        val sudoku = sudokuVo?.sudoku?.sudoku ?: listOf(
             listOf(1, 2, 3, 4, 5, 6, 7, 8, 9),
             listOf(2, 3, 4, 5, 6, 7, 8, 9, 1),
             listOf(3, 4, 5, 6, 7, 8, 9, 1, 2),
@@ -72,12 +85,11 @@ class HomeFragment : DaggerFragment() {
                     listOf(9, 1, 2, 3, 4, 5, 6, 7, 8)
                 ),
                 complexity = 5,
-                showSolutionGroup = true
+                showSolutionGroup = true,
+                currentSudoku = sudoku
             )
         )
-        if (loginViewModel.loginCached() == null) {
-            findNavController().navigate(R.id.action_navigation_home_to_navigation_login)
-        }
+
     }
 
 }
