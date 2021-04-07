@@ -26,6 +26,6 @@
         android:id="@+id/sudokuView"
         android:layout_width="match_parent"
         android:padding="1dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@color/gray_600"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

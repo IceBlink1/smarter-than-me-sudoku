@@ -32,6 +32,7 @@ class SudokuDataMapper {
         return SudokuPost(
             originalSudoku = sudoku.originalSudoku,
             solution = sudoku.solution,
+            currentSudoku = sudoku.currentSudoku,
             complexity = sudoku.complexity
         )
     }

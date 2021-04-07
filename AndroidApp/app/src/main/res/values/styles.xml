@@ -26,4 +26,10 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <style name="RatingBar" parent="AppTheme">
+        <item name="colorControlNormal">@color/gray_400</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
+    </style>
+
+
 </resources>

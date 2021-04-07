@@ -25,7 +25,7 @@ class SudokuViewModel @Inject constructor(
 
     fun getSudokus() {
         viewModelScope.launch {
-            val sudokus = sudokuRepository.getSudokus()
+            val sudokus = sudokuRepository.getSudokus(forceUpdate = true)
             if (sudokus is Success) {
                 sudokuMutableLiveData.postValue(sudokus.data.mapNotNull { mapper.mapSudoku(it) })
             } else if (sudokus is Error) {

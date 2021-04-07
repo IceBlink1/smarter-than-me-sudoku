@@ -33,7 +33,7 @@ class SudokuCardItem(var cellValue: Int, val correctValue: Int, val showBorders:
             } else {
                 binding?.numberTextView?.setTextColor(redColor)
             }
-        } else {
+        } else if (newValue != correctValue) {
             binding?.numberTextView?.text = ""
         }
 

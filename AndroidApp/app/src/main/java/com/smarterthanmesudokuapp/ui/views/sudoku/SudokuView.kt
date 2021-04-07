@@ -11,6 +11,7 @@ import com.smarterthanmesudokuapp.R
 import com.smarterthanmesudokuapp.data.entities.Sudoku
 import com.smarterthanmesudokuapp.databinding.ViewSudokuBinding
 import com.smarterthanmesudokuapp.domain.entities.SudokuVo
+import com.smarterthanmesudokuapp.utils.gone
 import com.smarterthanmesudokuapp.utils.visible
 import com.xwray.groupie.GroupieAdapter
 import com.xwray.groupie.OnItemClickListener
@@ -104,6 +105,16 @@ class SudokuView(context: Context, attrs: AttributeSet, defStyle: Int) : FrameLa
         )
         showPicker()
         showSubmitButton()
+    }
+
+    fun hidePicker() {
+        binding.solutionRecyclerView.gone()
+    }
+
+    fun hideAllButtons() {
+        binding.submitButton.gone()
+        binding.fullSolutionButton.gone()
+        binding.oneStepButton.gone()
     }
 
     fun showPicker() {
