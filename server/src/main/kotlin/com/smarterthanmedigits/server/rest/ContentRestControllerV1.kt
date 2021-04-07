@@ -75,6 +75,10 @@ class ContentRestControllerV1 @Autowired constructor(
                     this.user = user
                 }
             }.forEach {
+                val sudoku = sudokuRepository.findByOriginalSudoku(it.originalSudoku)
+                if (sudoku != null) {
+                    sudokuRepository.delete(sudoku)
+                }
                 sudokuRepository.save(it)
             }
             return ResponseEntity.status(HttpStatus.CREATED).build()

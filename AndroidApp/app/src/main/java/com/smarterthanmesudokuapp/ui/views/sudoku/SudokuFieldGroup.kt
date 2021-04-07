@@ -7,10 +7,12 @@ import com.xwray.groupie.Item
 
 class SudokuFieldGroup(val sudokuVo: SudokuVo) : Group {
 
-    private val items: List<SudokuCardItem> =
-        sudokuVo.sudoku.flatten().zip(sudokuVo.solution.flatten()).map {
-            SudokuCardItem(it.first, it.second)
-        }
+    val items: List<SudokuCardItem> =
+        sudokuVo.solution?.let {
+            sudokuVo.sudoku.flatten().zip(it.flatten()).map {
+                SudokuCardItem(it.first, it.second)
+            }
+        } ?: listOf()
 
     override fun getItemCount(): Int {
         return FIELD_SIZE

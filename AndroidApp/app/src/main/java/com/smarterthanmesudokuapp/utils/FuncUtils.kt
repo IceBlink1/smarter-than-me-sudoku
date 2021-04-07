@@ -24,4 +24,8 @@ object FuncUtils {
         }
 
     }
+
+    fun List<List<Int>>.getStringSudoku(): String {
+        return this.flatten().map { it.toString() }.reduce { acc, s -> acc + s }
+    }
 }

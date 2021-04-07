@@ -78,6 +78,7 @@ dependencies {
     implementation "com.xwray:groupie-viewbinding:2.9.0"
     implementation project(path: ":digitRecognition")
     implementation project(path: ":openCVLibrary343")
+    implementation project(path: ":SudokuSolver")
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
 }

@@ -1,0 +1,12 @@
+solver/Solver.java
+ solver.Solver
+board/Cell.java
+ board.Cell
+solver/BuildConfig.java
+ solver.BuildConfig
+board/SudokuField.java
+ board.SudokuField
+algoritms/Algorithm.java
+ algoritms.Algorithm
+algoritms/EnumerationAlg.java
+ algoritms.EnumerationAlg

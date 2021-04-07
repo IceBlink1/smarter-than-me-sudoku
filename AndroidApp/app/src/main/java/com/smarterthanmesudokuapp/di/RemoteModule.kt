@@ -20,7 +20,7 @@ class RemoteModule {
     fun providesRetrofit(): Retrofit {
         return Retrofit.Builder()
             .client(createOkHttpClient())
-            .baseUrl("http://10.0.2.2:8075")
+            .baseUrl("http://83.136.233.156:8075")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

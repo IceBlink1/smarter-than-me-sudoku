@@ -3,10 +3,11 @@ package com.smarterthanmesudokuapp.di
 import android.content.Context
 import android.content.SharedPreferences
 import com.smarterthanmesudokuapp.SudokuApplication
+import com.smarterthanmesudokuapp.ui.fragments.auth.login.LoginModule
+import com.smarterthanmesudokuapp.ui.fragments.auth.register.RegisterModule
 import com.smarterthanmesudokuapp.ui.fragments.camera.CameraModule
 import com.smarterthanmesudokuapp.ui.fragments.sudoku.SudokuModule
 import com.smarterthanmesudokuapp.ui.fragments.home.HomeModule
-import com.smarterthanmesudokuapp.ui.fragments.login.LoginModule
 import com.smarterthanmesudokuapp.ui.fragments.notifications.NotificationsModule
 import dagger.BindsInstance
 import dagger.Component
@@ -28,7 +29,8 @@ import javax.inject.Singleton
         SudokuModule::class,
         NotificationsModule::class,
         CameraModule::class,
-        LoginModule::class
+        LoginModule::class,
+        RegisterModule::class
     ]
 )
 interface ApplicationComponent : AndroidInjector<SudokuApplication> {

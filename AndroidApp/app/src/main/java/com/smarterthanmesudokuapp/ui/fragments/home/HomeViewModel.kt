@@ -1,28 +1,53 @@
 package com.smarterthanmesudokuapp.ui.fragments.home
 
-import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.digitrecognition.DigitRecogniser
-import org.opencv.core.Mat
+import androidx.lifecycle.viewModelScope
+import com.smarterthanmesudokuapp.domain.entities.SudokuVo
+import com.smarterthanmesudokuapp.domain.mappers.SudokuMapper
+import com.smarterthanmesudokuapp.repository.sudoku.SudokuRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import solver.Solver
 import javax.inject.Inject
-import dagger.Lazy as LazyInject
 
 class HomeViewModel @Inject constructor(
-    private val recogniser: LazyInject<DigitRecogniser>
+    private val sudokuRepository: SudokuRepository,
+    private val mapper: SudokuMapper
 ) : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
-    }
-    val text: LiveData<String> = _text
+    val solutionLiveData: MutableLiveData<List<List<Int>>> = MutableLiveData()
 
-    fun recognise() {
-        Log.d("bla", "asd")
+    val stepLiveData: MutableLiveData<Int> = MutableLiveData()
+
+    fun getSolution(sudoku: List<List<Int>>) {
+        viewModelScope.launch {
+            val solution = withContext(Dispatchers.Default) {
+                Solver.solve(sudoku.flatten(), 0)
+            }
+            solutionLiveData.postValue(solution)
+        }
     }
 
-    fun recogniseForReal() {
-        recogniser.get().recognise(Mat())
+    fun getNextStep(sudoku: List<List<Int>>) {
+        viewModelScope.launch {
+            val step = withContext(Dispatchers.Default) {
+                val solution = solutionLiveData.value
+                if (solution != null) {
+                    return@withContext sudoku.flatten().indexOfFirst { it == 0 }
+                } else {
+                    return@withContext -1
+                }
+            }
+            stepLiveData.postValue(step)
+        }
     }
+
+    fun saveSudoku(sudokuVo: SudokuVo) {
+        viewModelScope.launch {
+            sudokuRepository.saveSudoku(mapper.mapSudokuVo(sudokuVo))
+        }
+    }
+
 }

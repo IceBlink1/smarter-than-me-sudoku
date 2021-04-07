@@ -9,7 +9,7 @@
         android:id="@+id/navigation_home"
         android:name="com.smarterthanmesudokuapp.ui.fragments.home.HomeFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_nav_home_to_nav_sudoku"
             app:destination="@id/navigation_sudoku" />
@@ -39,7 +39,7 @@
         android:id="@+id/navigation_notifications"
         android:name="com.smarterthanmesudokuapp.ui.fragments.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" >
+        tools:layout="@layout/fragment_notifications">
         <action
             android:id="@+id/action_nav_notifications_to_nav_sudoku"
             app:destination="@id/navigation_sudoku" />
@@ -63,11 +63,25 @@
 
     <fragment
         android:id="@+id/navigation_login"
-        android:name="com.smarterthanmesudokuapp.ui.fragments.login.LoginFragment"
+        android:name="com.smarterthanmesudokuapp.ui.fragments.auth.login.LoginFragment"
         android:label="login"
         tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_navigation_login_to_navigation_home"
+            app:destination="@id/navigation_home" />
+        <action
+            android:id="@+id/action_navigation_login_to_navigation_register"
+            app:destination="@id/navigation_register" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_register"
+        android:name="com.smarterthanmesudokuapp.ui.fragments.auth.register.RegisterFragment"
+        android:label="register"
+        tools:layout="@layout/fragment_register">
+
+        <action
+            android:id="@+id/action_navigation_register_to_navigation_home"
             app:destination="@id/navigation_home" />
     </fragment>
 </navigation>

@@ -2,6 +2,7 @@ package com.smarterthanmesudokuapp.domain.mappers
 
 import com.smarterthanmesudokuapp.data.entities.Sudoku
 import com.smarterthanmesudokuapp.domain.entities.SudokuVo
+import com.smarterthanmesudokuapp.utils.FuncUtils.getStringSudoku
 
 class SudokuMapper {
     fun mapSudoku(sudoku: Sudoku): SudokuVo? {
@@ -15,6 +16,16 @@ class SudokuMapper {
             ),
             complexity = sudoku.complexity
         ) else null
+    }
+
+    fun mapSudokuVo(sudokuVo: SudokuVo): Sudoku {
+        return Sudoku(
+            0,
+            originalSudoku = sudokuVo.sudoku.getStringSudoku(),
+            currentSudoku = sudokuVo.currentSudoku.getStringSudoku(),
+            solution = sudokuVo.solution?.getStringSudoku(),
+            complexity = sudokuVo.complexity
+        )
     }
 
     private fun stringSudokuTo2DArray(sudoku: String): List<List<Int>> {

@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface SudokuRepository : JpaRepository<Sudoku?, Long?> {
     fun findBySolution(solution: String)
+
+    fun findByOriginalSudoku(originalSudoku: String?) : Sudoku?
 }

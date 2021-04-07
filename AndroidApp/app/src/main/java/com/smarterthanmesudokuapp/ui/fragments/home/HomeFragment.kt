@@ -4,11 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.activity.viewModels
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -16,7 +12,8 @@ import com.smarterthanmesudokuapp.R
 import com.smarterthanmesudokuapp.databinding.FragmentHomeBinding
 import com.smarterthanmesudokuapp.domain.entities.SudokuVo
 import com.smarterthanmesudokuapp.ui.MainActivity
-import com.smarterthanmesudokuapp.ui.fragments.login.LoginViewModel
+import com.smarterthanmesudokuapp.ui.fragments.auth.AuthViewModel
+import com.smarterthanmesudokuapp.utils.gone
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -27,7 +24,7 @@ class HomeFragment : DaggerFragment() {
 
     private val homeViewModel by viewModels<HomeViewModel> { viewModelFactory }
 
-    private val loginViewModel: LoginViewModel by viewModels({ activity as MainActivity }) { viewModelFactory }
+    private val authViewModel: AuthViewModel by viewModels({ activity as MainActivity }) { viewModelFactory }
 
     private lateinit var viewBinding: FragmentHomeBinding
 
@@ -46,50 +43,45 @@ class HomeFragment : DaggerFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        loginViewModel.loginStateLiveData.observe(viewLifecycleOwner) {
-            if (it == LoginViewModel.AuthState.NOT_AUTHENTICATED) {
+        authViewModel.loginStateLiveData.observe(viewLifecycleOwner) {
+            if (it == AuthViewModel.AuthState.NOT_AUTHENTICATED) {
                 findNavController()
                     .navigate(R.id.action_navigation_home_to_navigation_login)
             }
         }
-        loginViewModel.refreshToken()
-        if (loginViewModel.loginCached() == null) {
+        authViewModel.refreshToken()
+        if (authViewModel.loginCached() == null) {
             findNavController().navigate(R.id.action_navigation_home_to_navigation_login)
         }
 
         val sudokuVo = arguments?.getParcelable<HomeArguments>("args")
-        val sudoku = sudokuVo?.sudoku?.sudoku ?: listOf(
-            listOf(1, 2, 3, 4, 5, 6, 7, 8, 9),
-            listOf(2, 3, 4, 5, 6, 7, 8, 9, 1),
-            listOf(3, 4, 5, 6, 7, 8, 9, 1, 2),
-            listOf(4, 5, 6, 7, 8, 9, 1, 2, 3),
-            listOf(5, 6, 7, 8, 9, 1, 2, 3, 4),
-            listOf(6, 7, 8, 9, 1, 2, 3, 4, 5),
-            listOf(7, 8, 9, 1, 2, 3, 4, 5, 6),
-            listOf(8, 9, 1, 2, 3, 4, 5, 6, 7),
-            listOf(9, 1, 2, 3, 4, 5, 6, 7, 8)
-        )
+        if (sudokuVo != null) {
+            viewBinding.sudokuView.setUp(sudokuVo.sudoku)
+            viewBinding.sudokuView.binding.submitButton.setOnClickListener {
+                viewBinding.sudokuView.binding.submitButton.gone()
+                viewBinding.sudokuView.showSolutionButtons()
+            }
+        } else {
+            viewBinding.sudokuView.setUp()
+//            viewBinding.sudokuView.showPicker()
+//            viewBinding.sudokuView.showSolutionButtons()
 
-        viewBinding.sudokuView.setUp(
-            SudokuVo(
-                sudoku = sudoku,
-                solution = listOf(
-                    listOf(1, 2, 3, 4, 5, 6, 7, 8, 9),
-                    listOf(2, 3, 4, 5, 6, 7, 8, 9, 1),
-                    listOf(3, 4, 5, 6, 7, 8, 9, 1, 2),
-                    listOf(4, 5, 6, 7, 8, 9, 1, 2, 3),
-                    listOf(5, 6, 7, 8, 9, 1, 2, 3, 4),
-                    listOf(6, 7, 8, 9, 1, 2, 3, 4, 5),
-                    listOf(7, 8, 9, 1, 2, 3, 4, 5, 6),
-                    listOf(8, 9, 1, 2, 3, 4, 5, 6, 7),
-                    listOf(9, 1, 2, 3, 4, 5, 6, 7, 8)
-                ),
-                complexity = 5,
-                showSolutionGroup = true,
-                currentSudoku = sudoku
-            )
-        )
+            viewBinding.sudokuView.binding.submitButton.setOnClickListener {
+                viewBinding.sudokuView.binding.submitButton.gone()
+                viewBinding.sudokuView.showSolutionButtons()
+                viewBinding.sudokuView.shouldEditOriginalField = false
+                homeViewModel.solutionLiveData.observe(viewLifecycleOwner) {
+                    if (it != null) {
+                        viewBinding.sudokuView.updateSolution(it.map { it.toMutableList() })
+                        homeViewModel.saveSudoku(
+                            viewBinding.sudokuView.getSudokuVo()
+                        )
+                    }
+                }
+                homeViewModel.getSolution(viewBinding.sudokuView.currentField)
 
+            }
+        }
     }
 
 }

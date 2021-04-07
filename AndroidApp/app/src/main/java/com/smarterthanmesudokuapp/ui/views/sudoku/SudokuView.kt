@@ -4,9 +4,11 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
+import androidx.core.view.children
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.smarterthanmesudokuapp.R
+import com.smarterthanmesudokuapp.data.entities.Sudoku
 import com.smarterthanmesudokuapp.databinding.ViewSudokuBinding
 import com.smarterthanmesudokuapp.domain.entities.SudokuVo
 import com.smarterthanmesudokuapp.utils.visible
@@ -22,11 +24,48 @@ class SudokuView(context: Context, attrs: AttributeSet, defStyle: Int) : FrameLa
 
     constructor(context: Context, attrs: AttributeSet) : this(context, attrs, 0)
 
-    private var selectedFieldCell: SudokuCardItem? = null
-    private var selectedSolutionCell: SudokuCardItem? = null
+    var originalField: List<MutableList<Int>> = listOf(
+        mutableListOf(0, 0, 0, 0, 0, 0, 0, 0, 0),
+        mutableListOf(0, 0, 0, 0, 0, 0, 0, 0, 0),
+        mutableListOf(0, 0, 0, 0, 0, 0, 0, 0, 0),
+        mutableListOf(0, 0, 0, 0, 0, 0, 0, 0, 0),
+        mutableListOf(0, 0, 0, 0, 0, 0, 0, 0, 0),
+        mutableListOf(0, 0, 0, 0, 0, 0, 0, 0, 0),
+        mutableListOf(0, 0, 0, 0, 0, 0, 0, 0, 0),
+        mutableListOf(0, 0, 0, 0, 0, 0, 0, 0, 0),
+        mutableListOf(0, 0, 0, 0, 0, 0, 0, 0, 0)
+    )
+
+    var currentField: List<MutableList<Int>> = listOf(
+        mutableListOf(0, 0, 0, 0, 0, 0, 0, 0, 0),
+        mutableListOf(0, 0, 0, 0, 0, 0, 0, 0, 0),
+        mutableListOf(0, 0, 0, 0, 0, 0, 0, 0, 0),
+        mutableListOf(0, 0, 0, 0, 0, 0, 0, 0, 0),
+        mutableListOf(0, 0, 0, 0, 0, 0, 0, 0, 0),
+        mutableListOf(0, 0, 0, 0, 0, 0, 0, 0, 0),
+        mutableListOf(0, 0, 0, 0, 0, 0, 0, 0, 0),
+        mutableListOf(0, 0, 0, 0, 0, 0, 0, 0, 0),
+        mutableListOf(0, 0, 0, 0, 0, 0, 0, 0, 0)
+    )
+
+    var solution: List<MutableList<Int>> = listOf(
+        mutableListOf(0, 0, 0, 0, 0, 0, 0, 0, 0),
+        mutableListOf(0, 0, 0, 0, 0, 0, 0, 0, 0),
+        mutableListOf(0, 0, 0, 0, 0, 0, 0, 0, 0),
+        mutableListOf(0, 0, 0, 0, 0, 0, 0, 0, 0),
+        mutableListOf(0, 0, 0, 0, 0, 0, 0, 0, 0),
+        mutableListOf(0, 0, 0, 0, 0, 0, 0, 0, 0),
+        mutableListOf(0, 0, 0, 0, 0, 0, 0, 0, 0),
+        mutableListOf(0, 0, 0, 0, 0, 0, 0, 0, 0),
+        mutableListOf(0, 0, 0, 0, 0, 0, 0, 0, 0)
+    )
+    private var selectedFieldCell: Pair<SudokuCardItem, Int>? = null
+    private var selectedSolutionCell: Pair<SudokuCardItem, Int>? = null
     private val fieldAdapter = GroupieAdapter()
     private val solutionAdapter = GroupieAdapter()
-    private val binding: ViewSudokuBinding =
+    private var fieldGroup: SudokuFieldGroup? = null
+    var shouldEditOriginalField = true
+    val binding: ViewSudokuBinding =
         ViewSudokuBinding.inflate(LayoutInflater.from(context), this, true)
 
     init {
@@ -38,9 +77,23 @@ class SudokuView(context: Context, attrs: AttributeSet, defStyle: Int) : FrameLa
 
     fun setUp(sudoku: SudokuVo) {
 
+        originalField = sudoku.sudoku.map { it.toMutableList() }
+        currentField = sudoku.currentSudoku.map { it.toMutableList() }
+        solution = sudoku.solution?.map { it.toMutableList() } ?: solution
+
+        setUp()
+    }
+
+    fun setUp() {
+        fieldGroup = SudokuFieldGroup(
+            getSudokuVo()
+        )
         fieldAdapter.apply {
-            add(Section().apply { add(SudokuFieldGroup(sudoku)) })
+            add(
+                fieldGroup!!
+            )
         }
+
 
         binding.sudokuRecyclerView.adapter = fieldAdapter
         binding.sudokuRecyclerView.layoutManager = GridLayoutManager(
@@ -49,29 +102,68 @@ class SudokuView(context: Context, attrs: AttributeSet, defStyle: Int) : FrameLa
             RecyclerView.VERTICAL,
             false
         )
-        if (sudoku.showSolutionGroup) {
-            binding.separator.visible()
-            binding.solutionRecyclerView.visible()
-            fieldAdapter.setOnItemClickListener(onFieldItemClickedListener())
-            solutionAdapter.add(SudokuSolutionGroup())
-            solutionAdapter.setOnItemClickListener(onSolutionClickedItemListener())
-            binding.solutionRecyclerView.adapter = solutionAdapter
-            binding.solutionRecyclerView.layoutManager = GridLayoutManager(
-                context,
-                SUDOKU_FIELD_WIDTH,
-                RecyclerView.VERTICAL,
-                false
-            )
+        showPicker()
+        showSubmitButton()
+    }
+
+    fun showPicker() {
+        binding.separator.visible()
+        binding.solutionRecyclerView.visible()
+        fieldAdapter.setOnItemClickListener(onFieldItemClickedListener())
+        solutionAdapter.add(SudokuSolutionGroup())
+        solutionAdapter.setOnItemClickListener(onSolutionClickedItemListener())
+        binding.solutionRecyclerView.adapter = solutionAdapter
+        binding.solutionRecyclerView.layoutManager = GridLayoutManager(
+            context,
+            SUDOKU_FIELD_WIDTH,
+            RecyclerView.VERTICAL,
+            false
+        )
+    }
+
+    fun showSubmitButton() {
+        binding.submitButton.visible()
+    }
+
+    fun showSolutionButtons() {
+        binding.fullSolutionButton.visible()
+        binding.fullSolutionButton.setOnClickListener {
+            showSolution()
         }
+        binding.oneStepButton.visible()
+    }
+
+    fun updateSolution(solution: List<MutableList<Int>>) {
+        this.solution = solution
+        fieldAdapter.clear()
+        fieldGroup = SudokuFieldGroup(getSudokuVo())
+        fieldAdapter.add(
+            fieldGroup!!
+        )
+    }
+
+    fun showSolution() {
+        fieldGroup?.items?.forEach { it.showSolution() }
     }
 
     private fun onFieldItemClickedListener() = OnItemClickListener { item, _ ->
         if (item is SudokuCardItem) {
-            selectedFieldCell?.setUnselected()
-            selectedFieldCell = item
-            selectedFieldCell?.setSelected()
-            selectedSolutionCell?.cellValue?.let {
-                selectedFieldCell?.updateCellValue(it)
+            selectedFieldCell?.first?.setUnselected()
+            selectedFieldCell = Pair(item, fieldAdapter.getAdapterPosition(item))
+            selectedFieldCell?.first?.setSelected()
+            selectedSolutionCell?.first?.cellValue?.let {
+                if (selectedFieldCell?.first?.cellValue == it) {
+                    selectedFieldCell?.first?.updateCellValue(0)
+                } else {
+                    selectedFieldCell?.first?.updateCellValue(it)
+                }
+                val idx = selectedFieldCell?.second
+                if (idx != null) {
+                    currentField[idx / 9][idx % 9] = selectedSolutionCell?.first?.cellValue!!
+                    if (shouldEditOriginalField) {
+                        originalField[idx / 9][idx % 9] = selectedSolutionCell?.first?.cellValue!!
+                    }
+                }
                 unselectCurrentItems()
             }
         }
@@ -79,21 +171,42 @@ class SudokuView(context: Context, attrs: AttributeSet, defStyle: Int) : FrameLa
 
     private fun onSolutionClickedItemListener() = OnItemClickListener { item, _ ->
         if (item is SudokuCardItem) {
-            selectedSolutionCell?.setUnselected()
-            selectedSolutionCell = item
-            selectedSolutionCell?.setSelected()
+            selectedSolutionCell?.first?.setUnselected()
+            selectedSolutionCell = Pair(item, solutionAdapter.getAdapterPosition(item))
+            selectedSolutionCell?.first?.setSelected()
             if (selectedFieldCell != null) {
-                selectedSolutionCell?.cellValue?.let {
-                    selectedFieldCell?.updateCellValue(it)
+                selectedSolutionCell?.first?.cellValue?.let {
+                    if (selectedFieldCell?.first?.cellValue == it) {
+                        selectedFieldCell?.first?.updateCellValue(0)
+                    } else {
+                        selectedFieldCell?.first?.updateCellValue(it)
+                    }
+                    val idx = selectedFieldCell?.second
+                    if (idx != null) {
+                        currentField[idx / 9][idx % 9] = selectedSolutionCell?.first?.cellValue!!
+                        if (shouldEditOriginalField) {
+                            originalField[idx / 9][idx % 9] =
+                                selectedSolutionCell?.first?.cellValue!!
+                        }
+                    }
                     unselectCurrentItems()
                 }
             }
         }
     }
 
+    fun getSudokuVo(): SudokuVo {
+        return SudokuVo(
+            sudoku = originalField,
+            solution = solution,
+            currentSudoku = currentField,
+            0
+        )
+    }
+
     private fun unselectCurrentItems() {
-        selectedFieldCell?.setUnselected()
-        selectedSolutionCell?.setUnselected()
+        selectedFieldCell?.first?.setUnselected()
+        selectedSolutionCell?.first?.setUnselected()
         selectedSolutionCell = null
         selectedFieldCell = null
     }

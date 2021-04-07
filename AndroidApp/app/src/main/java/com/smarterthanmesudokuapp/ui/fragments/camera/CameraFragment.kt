@@ -85,8 +85,7 @@ class CameraFragment : DaggerFragment(), CameraBridgeViewBase.CvCameraViewListen
                                     sudoku = sudoku,
                                     solution = sudoku,
                                     complexity = 2,
-                                    currentSudoku = sudoku,
-                                    showSolutionGroup = true
+                                    currentSudoku = sudoku
                                 )
                             )
                         )

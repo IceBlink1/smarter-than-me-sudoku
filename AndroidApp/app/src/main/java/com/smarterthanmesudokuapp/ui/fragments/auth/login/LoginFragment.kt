@@ -1,4 +1,4 @@
-package com.smarterthanmesudokuapp.ui.fragments.login
+package com.smarterthanmesudokuapp.ui.fragments.auth.login
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.smarterthanmesudokuapp.R
 import com.smarterthanmesudokuapp.databinding.FragmentLoginBinding
 import com.smarterthanmesudokuapp.ui.MainActivity
+import com.smarterthanmesudokuapp.ui.fragments.auth.AuthViewModel
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -23,7 +24,7 @@ class LoginFragment : DaggerFragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private val viewModel: LoginViewModel by viewModels({ activity as MainActivity }) { viewModelFactory }
+    private val viewModel: AuthViewModel by viewModels({ activity as MainActivity }) { viewModelFactory }
 
     private lateinit var binding: FragmentLoginBinding
 
@@ -53,6 +54,10 @@ class LoginFragment : DaggerFragment() {
                 binding.loginInputEditText.text.toString(),
                 binding.passwordInputEditText.text.toString()
             )
+        }
+
+        binding.registerButton.setOnClickListener {
+            findNavController().navigate(R.id.action_navigation_login_to_navigation_register)
         }
 
         viewModel.loginLiveData.observe(viewLifecycleOwner) {

@@ -16,7 +16,7 @@ class SudokuApplication : DaggerApplication(), HasAndroidInjector {
     override fun onCreate() {
         super.onCreate()
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:8075")
+            .baseUrl("http://83.136.233.156:8075")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         sudokuApi = retrofit.create(SudokuApi::class.java)

@@ -14,7 +14,7 @@ import javax.persistence.*
     typeClass = ListArrayType::class
 )
 class Sudoku : BaseEntity() {
-    @Column(name = "original_sudoku")
+    @Column(name = "original_sudoku", unique = true)
     var originalSudoku: String? = null
 
     @Column(name = "solution")

@@ -54,6 +54,10 @@ class SudokuCardItem(var cellValue: Int, val correctValue: Int, val showBorders:
         }
     }
 
+    fun showSolution() {
+        updateCellValue(correctValue)
+    }
+
     fun setSelected() {
         binding?.cellCardView?.strokeWidth = twoDp
         binding?.cellCardView?.strokeColor = selectColor
