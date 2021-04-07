@@ -27,5 +27,5 @@ class Sudoku : BaseEntity() {
     var complexity: Int? = null
 
     @Column(name = "currentSudoku")
-    val currentSudoku: String? = null
+    var currentSudoku: String? = null
 }

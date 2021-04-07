@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
+import java.util.*
 
 
 @RestController
@@ -72,11 +73,15 @@ class ContentRestControllerV1 @Autowired constructor(
                 Sudoku().apply {
                     originalSudoku = it.sudoku
                     solution = it.solution
+                    currentSudoku = it.currentSudoku
                     this.user = user
+                    created = Date()
+                    updated = Date()
                 }
             }.forEach {
                 val sudoku = sudokuRepository.findByOriginalSudoku(it.originalSudoku)
                 if (sudoku != null) {
+                    it.created = sudoku.created
                     sudokuRepository.delete(sudoku)
                 }
                 sudokuRepository.save(it)
