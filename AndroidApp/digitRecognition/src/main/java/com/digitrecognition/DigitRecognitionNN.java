@@ -1,5 +1,6 @@
 package com.digitrecognition;
 
+import org.deeplearning4j.nn.conf.layers.Convolution2D;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 import org.nd4j.linalg.api.ndarray.INDArray;
 
@@ -14,21 +15,25 @@ public class DigitRecognitionNN {
         recognitionModel = MultiLayerNetwork.load(new File(filename), true);
     }
 
+    /**
+     * Возвращает предсказание модели на переданных входных данных.
+     * @param input Многомерный массив размерности (1, 28, 28, 1).
+     * @return Предсказанное значение цифры в клетке.
+     */
     public int predict(INDArray input) {
-        final double MIN_PROBABILITY_FOR_DIGIT = 0.0;
-
         INDArray predictions = recognitionModel.output(input);
 
-        int result = 0;
-        double resultProbability = predictions.getDouble(0, 0);
+        int prediction = 0;
+        double maxProbability = predictions.getDouble(0, 0);
         for(int i = 1; i < 9; ++i) {
             double probability = predictions.getDouble(0, i);
-            if(probability > MIN_PROBABILITY_FOR_DIGIT &&
-                    resultProbability < probability) {
-                result = i;
-                resultProbability = probability;
+            if(maxProbability < probability) {
+                prediction = i;
+                maxProbability = probability;
             }
         }
-        return result + 1;
+        // Т.к. модель предсказывает числа от 0 до 8, предсказание надо
+        // увеличить на 1.
+        return prediction + 1;
     }
 }

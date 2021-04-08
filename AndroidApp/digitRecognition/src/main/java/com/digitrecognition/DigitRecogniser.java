@@ -19,12 +19,12 @@ public class DigitRecogniser {
 
     /**
      * Распознает поле судоку и возвращает цифры в клетках.
-     *
      * @param image Матрица изображения.
      * @return Двумерный массив цифр в клектках. Если клетка пуста, элемент
      * равен 0.
      */
     public ArrayList<ArrayList<Integer>> recognise(Mat image) {
+        // Получаем матрицы клеток поля.
         ArrayList<ArrayList<Mat>> cells = getCellsFromImage(image);
         ArrayList<NormalizedCell> normalizedCells = new ArrayList<>();
 
@@ -97,14 +97,19 @@ public class DigitRecogniser {
         return result;
     }
 
+    /**
+     * Конвертирует матрицу клетку в формат для подачи модели.
+     * @param cell Матрица распознаваемой клетки.
+     * @return Многомерный массив размерности (1, 28, 28, 1).
+     */
     private INDArray getInputForNN(Mat cell) {
         Mat resizedCell = new Mat(28, 28, CvType.CV_32F);
         Imgproc.resize(cell, resizedCell, resizedCell.size());
 
-        INDArray result = Nd4j.zeros(1, 28, 28, 1);
+        INDArray result = Nd4j.zeros(1, 1, 28, 28);
         for(int i = 0; i < 28; ++i) {
             for(int j = 0; j < 28; ++j) {
-                result.putScalar(new int[]{0, i, j, 0},
+                result.putScalar(new int[]{0, 0, i, j},
                         resizedCell.get(i, j)[0] / 255.0);
             }
         }
@@ -235,7 +240,6 @@ public class DigitRecogniser {
 
     /**
      * Выделяет поле судоку на изображении и разбивает на клетки.
-     *
      * @param imageMatrix Матрица изображения с полем.
      * @return Матрица матриц клеток.
      */
