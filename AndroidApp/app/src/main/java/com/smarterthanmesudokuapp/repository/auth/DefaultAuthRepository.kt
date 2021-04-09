@@ -49,5 +49,9 @@ class DefaultAuthRepository @Inject constructor(
         }
     }
 
+    override fun skipAuth() {
+        sharedPreferences.edit().putString("token", null).apply()
+    }
+
 
 }

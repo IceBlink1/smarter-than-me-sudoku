@@ -107,6 +107,10 @@ class SudokuView(context: Context, attrs: AttributeSet, defStyle: Int) : FrameLa
         showSubmitButton()
     }
 
+    fun showSolutionAt(position: Int) {
+        fieldGroup?.items?.get(position)?.showSolution()
+    }
+
     fun hidePicker() {
         binding.solutionRecyclerView.gone()
     }

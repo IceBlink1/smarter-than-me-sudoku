@@ -80,5 +80,6 @@ dependencies {
     implementation project(path: ":openCVLibrary343")
     implementation project(path: ":SudokuSolver")
     implementation 'com.jakewharton.timber:timber:4.7.1'
+    implementation 'com.github.razir.progressbutton:progressbutton:2.1.0'
 
 }

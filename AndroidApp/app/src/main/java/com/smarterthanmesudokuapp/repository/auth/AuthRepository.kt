@@ -13,4 +13,6 @@ interface AuthRepository {
     fun getCachedToken(): String?
 
     suspend fun refreshToken() : Result<AuthResponse>
+
+    fun skipAuth()
 }

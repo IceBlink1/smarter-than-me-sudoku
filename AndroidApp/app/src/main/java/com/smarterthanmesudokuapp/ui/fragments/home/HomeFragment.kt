@@ -4,10 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.github.razir.progressbutton.attachTextChangeAnimator
+import com.github.razir.progressbutton.bindProgressButton
+import com.github.razir.progressbutton.hideProgress
+import com.github.razir.progressbutton.showProgress
 import com.smarterthanmesudokuapp.R
 import com.smarterthanmesudokuapp.databinding.FragmentHomeBinding
 import com.smarterthanmesudokuapp.domain.entities.SudokuVo
@@ -63,24 +69,38 @@ class HomeFragment : DaggerFragment() {
             }
         } else {
             viewBinding.sudokuView.setUp()
-//            viewBinding.sudokuView.showPicker()
-//            viewBinding.sudokuView.showSolutionButtons()
-
+            bindProgressButton(viewBinding.sudokuView.binding.submitButton)
+            viewBinding.sudokuView.binding.submitButton.attachTextChangeAnimator()
             viewBinding.sudokuView.binding.submitButton.setOnClickListener {
-                viewBinding.sudokuView.binding.submitButton.gone()
-                viewBinding.sudokuView.showSolutionButtons()
-                viewBinding.sudokuView.shouldEditOriginalField = false
+                (it as Button).showProgress()
                 homeViewModel.solutionLiveData.observe(viewLifecycleOwner) {
                     if (it != null) {
+                        viewBinding.sudokuView.binding.submitButton.gone()
+                        viewBinding.sudokuView.showSolutionButtons()
+                        viewBinding.sudokuView.shouldEditOriginalField = false
                         viewBinding.sudokuView.updateSolution(it.map { it.toMutableList() })
                         homeViewModel.saveSudoku(
                             viewBinding.sudokuView.getSudokuVo()
                         )
+                        viewBinding.sudokuView.binding.oneStepButton.setOnClickListener {
+                            homeViewModel.getNextStep(viewBinding.sudokuView.currentField)
+                            homeViewModel.stepLiveData.observe(viewLifecycleOwner) {
+                                viewBinding.sudokuView.showSolutionAt(it)
+                            }
+                        }
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            "Введенный судоку не верен",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        viewBinding.sudokuView.binding.submitButton.hideProgress(R.string.finish_edit)
                     }
                 }
                 homeViewModel.getSolution(viewBinding.sudokuView.currentField)
 
             }
+
         }
     }
 

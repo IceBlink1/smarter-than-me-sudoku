@@ -6,10 +6,13 @@ import androidx.lifecycle.viewModelScope
 import com.smarterthanmesudokuapp.domain.entities.SudokuVo
 import com.smarterthanmesudokuapp.domain.mappers.SudokuMapper
 import com.smarterthanmesudokuapp.repository.sudoku.SudokuRepository
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import solver.Solver
+import timber.log.Timber
+import java.lang.IllegalArgumentException
 import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(
@@ -22,9 +25,16 @@ class HomeViewModel @Inject constructor(
     val stepLiveData: MutableLiveData<Int> = MutableLiveData()
 
     fun getSolution(sudoku: List<List<Int>>) {
+        val myHandler = CoroutineExceptionHandler { _, throwable ->
+            Timber.e(throwable)
+        }
         viewModelScope.launch {
-            val solution = withContext(Dispatchers.Default) {
-                Solver.solve(sudoku.flatten(), 0)
+            val solution = withContext(Dispatchers.Default + myHandler) {
+                try {
+                    Solver.solve(sudoku.flatten(), 0)
+                } catch (e: IllegalArgumentException) {
+                    null
+                }
             }
             solutionLiveData.postValue(solution)
         }

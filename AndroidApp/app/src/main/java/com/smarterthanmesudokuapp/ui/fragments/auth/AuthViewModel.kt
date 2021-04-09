@@ -41,6 +41,11 @@ class AuthViewModel @Inject constructor(
         return authRepository.getCachedToken()
     }
 
+    fun skipAuth() {
+        authRepository.skipAuth()
+        loginStateMutableLiveData.postValue(AuthState.SKIPPED)
+    }
+
     fun refreshToken() {
         if (loginCached() != null) {
             viewModelScope.launch {
