@@ -4,6 +4,7 @@ import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.factory.Nd4j;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.IOException;
@@ -103,15 +104,14 @@ public class DigitRecogniser {
      * @param cell Матрица распознаваемой клетки.
      * @return Многомерный массив размерности (1, 28, 28, 1).
      */
-    private Mat getInputForNN(Mat cell) {
+    private double[][][] getInputForNN(Mat cell) {
         Mat resizedCell = new Mat(28, 28, CvType.CV_32F);
         Imgproc.resize(cell, resizedCell, resizedCell.size());
 
-        Mat input = new Mat(new int[] { 28, 28, 1 }, CvType.CV_32F);
+        double[][][] input = new double[28][28][1];
         for(int i = 0; i < 28; ++i) {
             for(int j = 0; j < 28; ++j) {
-                input.put(new int[]{i, j, 0},
-                        resizedCell.get(i, j)[0] / 255.0);
+                input[i][j][0] = resizedCell.get(i, j)[0] / 255.0;
             }
         }
         return input;

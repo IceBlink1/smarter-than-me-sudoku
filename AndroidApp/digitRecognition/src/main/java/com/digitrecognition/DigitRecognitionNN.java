@@ -101,14 +101,8 @@ public class DigitRecognitionNN {
      * @param input Многомерный массив размерности (1, 28, 28, 1).
      * @return Предсказанное значение цифры в клетке.
      */
-    public int predict(Mat input) {
-        double[][][] data = new double[28][28][1];
-        for(int  i= 0; i < 28; ++i) {
-            for(int j = 0; j < 28; ++j) {
-                data[i][j][0] = input.get(new int[] { i, j, 0 })[0];
-            }
-        }
-        double[][][] predictions = model.forward(data);
+    public int predict(double[][][] input) {
+        double[][][] predictions = model.forward(input);
 
         int prediction = 0;
         double maxProbability = predictions[0][0][0];
