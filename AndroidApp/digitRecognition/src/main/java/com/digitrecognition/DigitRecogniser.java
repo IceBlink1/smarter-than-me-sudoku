@@ -89,8 +89,9 @@ public class DigitRecogniser {
                 result.get(cell.row).set(cell.column, 0);
             }
             else {
-                result.get(cell.row).set(cell.column, network.predict(
-                        getInputForNN(cell.cell)));
+                int digit = network.predict(
+                        getInputForNN(cell.cell));
+                result.get(cell.row).set(cell.column, digit);
             }
         }
 
@@ -102,18 +103,18 @@ public class DigitRecogniser {
      * @param cell Матрица распознаваемой клетки.
      * @return Многомерный массив размерности (1, 28, 28, 1).
      */
-    private INDArray getInputForNN(Mat cell) {
+    private Mat getInputForNN(Mat cell) {
         Mat resizedCell = new Mat(28, 28, CvType.CV_32F);
         Imgproc.resize(cell, resizedCell, resizedCell.size());
 
-        INDArray result = Nd4j.zeros(1, 1, 28, 28);
+        Mat input = new Mat(new int[] { 28, 28, 1 }, CvType.CV_32F);
         for(int i = 0; i < 28; ++i) {
             for(int j = 0; j < 28; ++j) {
-                result.putScalar(new int[]{0, 0, i, j},
+                input.put(new int[]{i, j, 0},
                         resizedCell.get(i, j)[0] / 255.0);
             }
         }
-        return result;
+        return input;
     }
 
     /**
