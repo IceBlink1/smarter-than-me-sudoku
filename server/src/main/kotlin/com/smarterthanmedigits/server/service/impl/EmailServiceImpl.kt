@@ -25,10 +25,10 @@ class EmailServiceImpl(
         @JvmStatic
         fun getJavaMailSender(): JavaMailSender {
             val mailSender = JavaMailSenderImpl()
-            mailSender.host = "smtp.yandex.ru"
+            mailSender.host = "smtp.gmail.com"
             mailSender.port = 465
 
-            mailSender.username = "smarterthanmedigits@yandex.ru"
+            mailSender.username = "smarterthanmedigits@gmail.com"
             mailSender.password = ""
 
             val props: Properties = mailSender.javaMailProperties
