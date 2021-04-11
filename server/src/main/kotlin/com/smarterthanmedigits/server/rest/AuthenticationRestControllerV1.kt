@@ -1,9 +1,7 @@
 package com.smarterthanmedigits.server.rest
 
 import com.smarterthanmedigits.server.config.SecurityConfig
-import com.smarterthanmedigits.server.dto.AuthRequestDto
-import com.smarterthanmedigits.server.dto.RegisterRequestDto
-import com.smarterthanmedigits.server.dto.ResetPasswordRequestDto
+import com.smarterthanmedigits.server.dto.*
 import com.smarterthanmedigits.server.model.User
 import com.smarterthanmedigits.server.security.JwtTokenProvider
 import com.smarterthanmedigits.server.security.JwtUser
@@ -95,7 +93,7 @@ class AuthenticationRestControllerV1
         userService.save(user)
         emailService.sendEmail(
             SimpleMailMessage().apply {
-                setFrom("smarterthanmedigits@yandex.ru")
+                setFrom("smarterthanmedigits@gmail.com")
                 setTo(user.email)
                 setSubject("Восстановление пароля")
                 setText(
@@ -111,8 +109,8 @@ class AuthenticationRestControllerV1
     }
 
     @PostMapping("unlogged/reset_password_code")
-    fun resetPasswordCode(@RequestBody code: String): ResponseEntity<Any?> {
-        val user = userService.findUserByResetCode(code)
+    fun resetPasswordCode(@RequestBody body: ResetPasswordCodeRequestDto): ResponseEntity<Any?> {
+        val user = userService.findUserByResetCode(body.code)
         return if (user == null) {
             ResponseEntity.notFound().build()
         } else {
@@ -123,10 +121,10 @@ class AuthenticationRestControllerV1
     }
 
     @PostMapping("reset_password")
-    fun resetPasswordNewPassword(@RequestBody newPassword: String): ResponseEntity<Any?> {
+    fun resetPasswordNewPassword(@RequestBody body: ResetPasswordNewPasswordRequestDto): ResponseEntity<Any?> {
         val user = getUser()
         return if (user != null) {
-            userService.resetPassword(user, newPassword)
+            userService.resetPassword(user, body.password)
             ResponseEntity.ok().build()
         } else {
             ResponseEntity.badRequest().build()
