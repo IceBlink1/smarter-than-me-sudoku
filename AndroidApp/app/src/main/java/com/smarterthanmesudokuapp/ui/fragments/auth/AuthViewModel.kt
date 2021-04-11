@@ -54,10 +54,16 @@ class AuthViewModel @Inject constructor(
                         loginStateMutableLiveData.postValue(AuthState.AUTHENTICATED)
                         loginMutableLiveData.postValue(auth.data)
                     }
-                    is Error -> loginStateMutableLiveData.postValue(AuthState.NOT_AUTHENTICATED)
+                    is Error -> {
+                        if (loginStateLiveData.value != AuthState.SKIPPED) {
+                            loginStateMutableLiveData.postValue(
+                                AuthState.NOT_AUTHENTICATED
+                            )
+                        }
+                    }
                 }
             }
-        } else {
+        } else if (loginStateLiveData.value != AuthState.SKIPPED) {
             loginStateMutableLiveData.postValue(AuthState.NOT_AUTHENTICATED)
         }
     }
@@ -78,11 +84,52 @@ class AuthViewModel @Inject constructor(
         }
     }
 
+    fun recoverPassword(email: String) {
+        viewModelScope.launch {
+            val a = authRepository.resetPassword(email)
+            when (a) {
+                is Success -> {
+                    loginStateMutableLiveData.postValue(AuthState.PENDING)
+                }
+                is Error -> {
+                    Timber.e(a.exception)
+                    loginStateMutableLiveData.postValue(AuthState.NOT_AUTHENTICATED)
+                }
+            }
+        }
+    }
+
+    fun recoverPasswordCode(code: String) {
+        viewModelScope.launch {
+            when (val auth = authRepository.resetPasswordCode(code)) {
+                is Success -> {
+                    loginStateMutableLiveData.postValue(AuthState.SETTING_PASSWORD)
+                    loginMutableLiveData.postValue(auth.data)
+                }
+                is Error -> {
+                    Timber.e(auth.exception)
+                }
+            }
+        }
+    }
+
+    fun setNewPassword(password: String) {
+        viewModelScope.launch {
+            when (val a = authRepository.setNewPassword(password)) {
+                is Success -> {
+                    loginStateMutableLiveData.postValue(AuthState.AUTHENTICATED)
+                }
+                is Error -> Timber.e(a.exception)
+            }
+        }
+    }
+
 
     enum class AuthState {
         AUTHENTICATED,
         NOT_AUTHENTICATED,
         PENDING,
+        SETTING_PASSWORD,
         SKIPPED
     }
 

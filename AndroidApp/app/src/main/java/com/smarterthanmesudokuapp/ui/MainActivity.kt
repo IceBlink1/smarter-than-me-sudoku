@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -13,6 +14,9 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.smarterthanmesudokuapp.R
+import com.smarterthanmesudokuapp.databinding.ActivityMainBinding
+import com.smarterthanmesudokuapp.utils.gone
+import com.smarterthanmesudokuapp.utils.visible
 import dagger.android.support.DaggerAppCompatActivity
 import org.opencv.android.BaseLoaderCallback
 import org.opencv.android.LoaderCallbackInterface
@@ -22,6 +26,8 @@ import javax.inject.Inject
 class MainActivity @Inject constructor() : DaggerAppCompatActivity() {
 
     lateinit var navController: NavController
+
+
 
     private val mLoaderCallback: BaseLoaderCallback = object : BaseLoaderCallback(this) {
         override fun onManagerConnected(status: Int) {
@@ -43,7 +49,7 @@ class MainActivity @Inject constructor() : DaggerAppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_sudoku, R.id.navigation_camera
+                R.id.navigation_home, R.id.navigation_sudoku, R.id.navigation_photo_picker
             )
         )
 
@@ -64,6 +70,14 @@ class MainActivity @Inject constructor() : DaggerAppCompatActivity() {
         } else {
             mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS)
         }
+    }
+
+    fun hideBottomNav() {
+        findViewById<BottomNavigationView>(R.id.nav_view).gone()
+    }
+
+    fun showBottomNav() {
+        findViewById<BottomNavigationView>(R.id.nav_view).visible()
     }
 
     companion object {

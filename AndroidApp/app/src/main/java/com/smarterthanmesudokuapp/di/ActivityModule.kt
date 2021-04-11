@@ -2,6 +2,7 @@ package com.smarterthanmesudokuapp.di
 
 import com.smarterthanmesudokuapp.ui.MainActivity
 import com.smarterthanmesudokuapp.ui.fragments.auth.login.LoginModule
+import com.smarterthanmesudokuapp.ui.fragments.auth.password.RecoverPasswordModule
 import com.smarterthanmesudokuapp.ui.fragments.auth.register.RegisterModule
 import com.smarterthanmesudokuapp.ui.fragments.home.HomeModule
 import dagger.Module
@@ -15,7 +16,8 @@ abstract class ActivityModule {
         modules = [
             HomeModule::class,
             LoginModule::class,
-            RegisterModule::class
+            RegisterModule::class,
+            RecoverPasswordModule::class
         ]
     )
     abstract fun bindMainActivity(): MainActivity

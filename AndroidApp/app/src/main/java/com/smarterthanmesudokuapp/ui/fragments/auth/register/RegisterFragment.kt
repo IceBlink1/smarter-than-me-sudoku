@@ -1,5 +1,6 @@
 package com.smarterthanmesudokuapp.ui.fragments.auth.register
 
+import android.content.Context
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -65,6 +66,16 @@ class RegisterFragment : DaggerFragment() {
                 findNavController().navigate(R.id.action_navigation_register_to_navigation_home)
             }
         }
+    }
+
+//    override fun onAttach(context: Context) {
+//        super.onAttach(context)
+//        (requireActivity() as MainActivity).hideBottomNav()
+//    }
+
+    override fun onDetach() {
+        super.onDetach()
+        (requireActivity() as MainActivity).showBottomNav()
     }
 
 }

@@ -5,17 +5,17 @@ import com.smarterthanmesudokuapp.domain.entities.SudokuVo
 import com.smarterthanmesudokuapp.utils.FuncUtils.getStringSudoku
 
 class SudokuMapper {
-    fun mapSudoku(sudoku: Sudoku): SudokuVo? {
-        return if (sudoku.solution != null) SudokuVo(
+    fun mapSudoku(sudoku: Sudoku): SudokuVo {
+        return SudokuVo(
             sudoku = stringSudokuTo2DArray(sudoku.originalSudoku),
-            solution = stringSudokuTo2DArray(sudoku.solution),
+            solution = sudoku.solution?.let { stringSudokuTo2DArray(it) },
             currentSudoku = if (sudoku.currentSudoku != null)
                 stringSudokuTo2DArray(sudoku.currentSudoku)
             else stringSudokuTo2DArray(
                 sudoku.originalSudoku
             ),
             complexity = sudoku.complexity
-        ) else null
+        )
     }
 
     fun mapSudokuVo(sudokuVo: SudokuVo): Sudoku {

@@ -70,11 +70,6 @@ class CameraFragment : DaggerFragment(), CameraBridgeViewBase.CvCameraViewListen
         viewDataBinding.captureButton.setOnClickListener {
             if (sudokuBoardMat != null) {
                 Core.rotate(sudokuBoardMat, sudokuBoardMat, Core.ROTATE_90_CLOCKWISE)
-                val originalSudokuBitmap = Bitmap.createBitmap(
-                    sudokuBoardMat!!.width(),
-                    sudokuBoardMat!!.height(),
-                    Bitmap.Config.ARGB_8888
-                )
                 val sudoku = digitRecogniser.recognise(sudokuBoardMat)
                 findNavController().navigate(
                     R.id.action_navigation_camera_to_navigation_home,
@@ -83,8 +78,8 @@ class CameraFragment : DaggerFragment(), CameraBridgeViewBase.CvCameraViewListen
                             "args", HomeArguments(
                                 SudokuVo(
                                     sudoku = sudoku,
-                                    solution = sudoku,
-                                    complexity = 2,
+                                    solution = null,
+                                    complexity = null,
                                     currentSudoku = sudoku
                                 )
                             )
@@ -200,7 +195,7 @@ class CameraFragment : DaggerFragment(), CameraBridgeViewBase.CvCameraViewListen
         Imgproc.drawMarker(
             ogRGBMat,
             Point(centrePoint.x, centrePoint.y),
-            Scalar(204.0, 193.0, 90.0),
+            Scalar(252.0, 255.0, 89.0),
             Imgproc.MARKER_CROSS,
             20,
             3

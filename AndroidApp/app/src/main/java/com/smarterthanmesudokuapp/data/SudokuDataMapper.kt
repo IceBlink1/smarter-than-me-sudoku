@@ -20,7 +20,7 @@ class SudokuDataMapper {
 
     fun toDomainModel(sudokuResponseItem: SudokuResponseItem): Sudoku {
         return Sudoku(
-            id = 0,
+            id = sudokuResponseItem.remoteId,
             originalSudoku = sudokuResponseItem.originalSudoku,
             solution = sudokuResponseItem.solution,
             complexity = sudokuResponseItem.complexity,
@@ -39,7 +39,7 @@ class SudokuDataMapper {
 
     fun toDtoModel(sudoku: Sudoku): SudokuDto {
         return SudokuDto(
-            id = 0,
+            id = sudoku.id,
             originalSudoku = sudoku.originalSudoku,
             solution = sudoku.solution,
             complexity = sudoku.complexity,

@@ -5,11 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.smarterthanmesudokuapp.R
@@ -45,6 +47,20 @@ class SudokuFragment : DaggerFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.sudokuLiveData.observe(viewLifecycleOwner) {
+            viewDataBinding.sudokuHistoryRecycler.addItemDecoration(
+                DividerItemDecoration(
+                    viewDataBinding.sudokuHistoryRecycler.context,
+                    DividerItemDecoration.VERTICAL
+                ).apply {
+                    ContextCompat.getDrawable(requireContext(), R.drawable.white_divider)
+                        ?.let { it1 ->
+                            setDrawable(
+                                it1
+                            )
+                        }
+                }
+            )
+
             historyAdapter.updateAsync(it.map {
                 SudokuHistoryItem(sudokuVo = it) {
                     findNavController().navigate(

@@ -33,10 +33,6 @@ class DefaultAuthRepository @Inject constructor(
         }
     }
 
-    override suspend fun recoverPassword(email: String): Result<AuthResponse> {
-        TODO("Not yet implemented")
-    }
-
     override fun getCachedToken(): String? {
         return sharedPreferences.getString("token", null)
     }
@@ -53,5 +49,22 @@ class DefaultAuthRepository @Inject constructor(
         sharedPreferences.edit().putString("token", null).apply()
     }
 
+    override suspend fun resetPassword(email: String): Result<*> {
+        return withContext(dispatcher) {
+            dataSource.resetPassword(email)
+        }
+    }
+
+    override suspend fun resetPasswordCode(code: String): Result<AuthResponse> {
+        return withContext(dispatcher) {
+            dataSource.resetPasswordCode(code)
+        }
+    }
+
+    override suspend fun setNewPassword(password: String): Result<*> {
+        return withContext(dispatcher) {
+            dataSource.setNewPassword(password)
+        }
+    }
 
 }

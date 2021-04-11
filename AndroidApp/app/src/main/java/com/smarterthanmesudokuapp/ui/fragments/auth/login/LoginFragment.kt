@@ -1,5 +1,6 @@
 package com.smarterthanmesudokuapp.ui.fragments.auth.login
 
+import android.content.Context
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -60,10 +61,18 @@ class LoginFragment : DaggerFragment() {
             findNavController().navigate(R.id.action_navigation_login_to_navigation_register)
         }
 
-        viewModel.loginLiveData.observe(viewLifecycleOwner) {
-            if (it != null) {
+        viewModel.loginStateLiveData.observe(viewLifecycleOwner) {
+            if (it != AuthViewModel.AuthState.NOT_AUTHENTICATED) {
                 findNavController().navigate(R.id.action_navigation_login_to_navigation_home)
             }
+        }
+
+        binding.skipButton.setOnClickListener {
+            viewModel.skipAuth()
+        }
+
+        binding.recoverPasswordButton.setOnClickListener {
+            findNavController().navigate(R.id.action_navigation_login_to_navigation_recover_password_email)
         }
     }
 

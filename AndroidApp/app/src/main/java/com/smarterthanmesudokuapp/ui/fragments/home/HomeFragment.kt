@@ -34,8 +34,6 @@ class HomeFragment : DaggerFragment() {
 
     private lateinit var viewBinding: FragmentHomeBinding
 
-    private val args: HomeArguments by navArgs()
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -48,15 +46,16 @@ class HomeFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         authViewModel.loginStateLiveData.observe(viewLifecycleOwner) {
             if (it == AuthViewModel.AuthState.NOT_AUTHENTICATED) {
                 findNavController()
                     .navigate(R.id.action_navigation_home_to_navigation_login)
+            } else {
+                (requireActivity() as MainActivity).showBottomNav()
             }
         }
         authViewModel.refreshToken()
-        if (authViewModel.loginCached() == null) {
+        if (authViewModel.loginCached() == null && authViewModel.loginStateLiveData.value != AuthViewModel.AuthState.SKIPPED) {
             findNavController().navigate(R.id.action_navigation_home_to_navigation_login)
         }
 

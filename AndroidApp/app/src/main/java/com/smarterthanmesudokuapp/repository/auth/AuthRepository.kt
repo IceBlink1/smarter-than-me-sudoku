@@ -8,11 +8,15 @@ interface AuthRepository {
 
     suspend fun register(login: String, password: String, email: String): Result<AuthResponse>
 
-    suspend fun recoverPassword(email: String): Result<AuthResponse>
-
     fun getCachedToken(): String?
 
     suspend fun refreshToken() : Result<AuthResponse>
 
     fun skipAuth()
+
+    suspend fun resetPassword(email: String): Result<*>
+
+    suspend fun resetPasswordCode(code: String): Result<AuthResponse>
+
+    suspend fun setNewPassword(password: String): Result<*>
 }
