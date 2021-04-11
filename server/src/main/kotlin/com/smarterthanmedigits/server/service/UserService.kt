@@ -9,7 +9,17 @@ interface UserService {
 
     fun findByUsername(username: String): User?
 
+    fun findByEmail(email: String) : User?
+
     fun findById(id: Long): User?
 
     fun delete(id: Long)
+
+    fun save(user: User)
+
+    fun resetPassword(user: User, newPassword: String)
+
+    fun findUserByResetCode(code: String) : User?
+
+    fun deleteResetCode(user: User)
 }

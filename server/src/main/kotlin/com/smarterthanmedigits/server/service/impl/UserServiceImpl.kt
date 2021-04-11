@@ -14,9 +14,9 @@ import javax.persistence.PersistenceException
 @Service
 @Slf4j
 class UserServiceImpl(
-        val userRepository: UserRepository,
-        val roleRepository: RoleRepository,
-        val passwordEncoder: BCryptPasswordEncoder
+    val userRepository: UserRepository,
+    val roleRepository: RoleRepository,
+    val passwordEncoder: BCryptPasswordEncoder
 ) : UserService {
 
     override fun register(user: User): User {
@@ -27,7 +27,7 @@ class UserServiceImpl(
         user.password = passwordEncoder.encode(user.password)
         user.status = Status.ACTIVE
         user.roles = userRoles
-        if(username == null || userRepository.findByUsername(username) != null) {
+        if (username == null || userRepository.findByUsername(username) != null) {
             throw PersistenceException()
         }
         val registeredUser = userRepository.save(user)
@@ -48,5 +48,30 @@ class UserServiceImpl(
 
     override fun delete(id: Long) {
 
+    }
+
+    override fun findByEmail(email: String): User? {
+        return userRepository.findByEmail(email)
+    }
+
+    override fun save(user: User) {
+        userRepository.save(user)
+    }
+
+    override fun resetPassword(user: User, newPassword: String) {
+        user.apply {
+            password = passwordEncoder.encode(newPassword)
+            resetCode = null
+            save(this)
+        }
+    }
+
+    override fun findUserByResetCode(code: String): User? {
+        return userRepository.findByResetCode(code)
+    }
+
+    override fun deleteResetCode(user: User) {
+        user.resetCode = null
+        userRepository.save(user)
     }
 }

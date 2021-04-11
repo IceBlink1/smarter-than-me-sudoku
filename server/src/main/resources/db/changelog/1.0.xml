@@ -154,4 +154,12 @@
     <changeSet id="1.0.10" author="alexander.lyutikov">
         <renameColumn tableName="sudoku" oldColumnName="currentSudoku" newColumnName="current_sudoku"/>
     </changeSet>
+
+    <changeSet id="1.0.11" author="alexander.lyutikov">
+        <addColumn tableName="users">
+            <column name="reset_password_code" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>
