@@ -98,7 +98,12 @@ class AuthenticationRestControllerV1
                 setFrom("smarterthanmedigits@yandex.ru")
                 setTo(user.email)
                 setSubject("Восстановление пароля")
-                setText("Ваш код восстановления: ${user.resetCode}")
+                setText(
+                    "Ваш код восстановления для приложения \"Умнее меня - цифры\": ${user.resetCode}\n" +
+                            "---------------------------------------------------------\n" +
+                            "С уважением,\n" +
+                            "Команда разработчиков приложения \"Умнее меня - цифры\""
+                )
 
             }
         )
