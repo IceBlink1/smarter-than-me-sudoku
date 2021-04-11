@@ -80,7 +80,7 @@ class CameraFragment : DaggerFragment(), CameraBridgeViewBase.CvCameraViewListen
                                     sudoku = sudoku,
                                     solution = null,
                                     complexity = null,
-                                    currentSudoku = sudoku
+                                    currentSudoku = null
                                 )
                             )
                         )
@@ -200,7 +200,7 @@ class CameraFragment : DaggerFragment(), CameraBridgeViewBase.CvCameraViewListen
             20,
             3
         )
-        Imgproc.drawContours(ogRGBMat, realContours, indexOfBoard, Scalar(100.0, 0.0, 255.0), 3)
+        Imgproc.drawContours(ogRGBMat, realContours, indexOfBoard, Scalar(252.0, 255.0, 89.0), 3)
 
         try {
             val boundingRect = Imgproc.boundingRect(realContours[indexOfBoard])

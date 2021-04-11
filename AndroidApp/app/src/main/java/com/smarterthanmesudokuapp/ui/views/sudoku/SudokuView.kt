@@ -79,7 +79,7 @@ class SudokuView(context: Context, attrs: AttributeSet, defStyle: Int) : FrameLa
     fun setUp(sudoku: SudokuVo) {
 
         originalField = sudoku.sudoku.map { it.toMutableList() }
-        currentField = sudoku.currentSudoku.map { it.toMutableList() }
+        currentField = sudoku.currentSudoku?.map { it.toMutableList() } ?: originalField
         solution = sudoku.solution?.map { it.toMutableList() } ?: solution
 
         setUp()
@@ -155,6 +155,7 @@ class SudokuView(context: Context, attrs: AttributeSet, defStyle: Int) : FrameLa
         fieldAdapter.add(
             fieldGroup!!
         )
+        fieldAdapter.notifyDataSetChanged()
     }
 
     fun showSolution() {
@@ -168,15 +169,15 @@ class SudokuView(context: Context, attrs: AttributeSet, defStyle: Int) : FrameLa
             selectedFieldCell?.first?.setSelected()
             selectedSolutionCell?.first?.cellValue?.let {
                 if (selectedFieldCell?.first?.cellValue == it) {
-                    selectedFieldCell?.first?.updateCellValue(0)
+                    selectedFieldCell?.first?.updateCellValue(0, shouldEditOriginalField)
                 } else {
-                    selectedFieldCell?.first?.updateCellValue(it)
+                    selectedFieldCell?.first?.updateCellValue(it, shouldEditOriginalField)
                 }
                 val idx = selectedFieldCell?.second
                 if (idx != null) {
-                    currentField[idx / 9][idx % 9] = selectedSolutionCell?.first?.cellValue!!
+                    currentField[idx / 9][idx % 9] = selectedFieldCell?.first?.cellValue!!
                     if (shouldEditOriginalField) {
-                        originalField[idx / 9][idx % 9] = selectedSolutionCell?.first?.cellValue!!
+                        originalField[idx / 9][idx % 9] = selectedFieldCell?.first?.cellValue!!
                     }
                 }
                 unselectCurrentItems()
@@ -192,16 +193,16 @@ class SudokuView(context: Context, attrs: AttributeSet, defStyle: Int) : FrameLa
             if (selectedFieldCell != null) {
                 selectedSolutionCell?.first?.cellValue?.let {
                     if (selectedFieldCell?.first?.cellValue == it) {
-                        selectedFieldCell?.first?.updateCellValue(0)
+                        selectedFieldCell?.first?.updateCellValue(0, shouldEditOriginalField)
                     } else {
-                        selectedFieldCell?.first?.updateCellValue(it)
+                        selectedFieldCell?.first?.updateCellValue(it, shouldEditOriginalField)
                     }
                     val idx = selectedFieldCell?.second
                     if (idx != null) {
-                        currentField[idx / 9][idx % 9] = selectedSolutionCell?.first?.cellValue!!
+                        currentField[idx / 9][idx % 9] = selectedFieldCell?.first?.cellValue!!
                         if (shouldEditOriginalField) {
                             originalField[idx / 9][idx % 9] =
-                                selectedSolutionCell?.first?.cellValue!!
+                                selectedFieldCell?.first?.cellValue!!
                         }
                     }
                     unselectCurrentItems()

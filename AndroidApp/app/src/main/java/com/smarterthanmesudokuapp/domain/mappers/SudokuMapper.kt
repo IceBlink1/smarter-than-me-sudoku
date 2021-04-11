@@ -22,7 +22,7 @@ class SudokuMapper {
         return Sudoku(
             0,
             originalSudoku = sudokuVo.sudoku.getStringSudoku(),
-            currentSudoku = sudokuVo.currentSudoku.getStringSudoku(),
+            currentSudoku = sudokuVo.currentSudoku?.getStringSudoku(),
             solution = sudokuVo.solution?.getStringSudoku(),
             complexity = sudokuVo.complexity
         )

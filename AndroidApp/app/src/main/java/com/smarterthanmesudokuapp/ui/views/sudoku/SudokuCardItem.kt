@@ -9,7 +9,7 @@ import com.smarterthanmesudokuapp.databinding.ItemSudokuCardBinding
 import com.xwray.groupie.viewbinding.BindableItem
 
 
-class SudokuCardItem(var cellValue: Int, val correctValue: Int, val showBorders: Boolean = false) :
+class SudokuCardItem(var cellValue: Int, var correctValue: Int?, val showBorders: Boolean = false) :
     BindableItem<ItemSudokuCardBinding>() {
 
     private var binding: ItemSudokuCardBinding? = null
@@ -24,7 +24,9 @@ class SudokuCardItem(var cellValue: Int, val correctValue: Int, val showBorders:
         setUpCell()
     }
 
-    fun updateCellValue(newValue: Int) {
+    fun updateCellValue(newValue: Int, isEdit: Boolean) {
+        if (isEdit)
+            correctValue = newValue
         if (newValue in 1..9 && newValue != cellValue) {
             cellValue = newValue
             binding?.numberTextView?.text = cellValue.toString()
@@ -33,7 +35,8 @@ class SudokuCardItem(var cellValue: Int, val correctValue: Int, val showBorders:
             } else {
                 binding?.numberTextView?.setTextColor(redColor)
             }
-        } else if (newValue != correctValue) {
+        } else {
+            cellValue = 0
             binding?.numberTextView?.text = ""
         }
 
@@ -55,7 +58,7 @@ class SudokuCardItem(var cellValue: Int, val correctValue: Int, val showBorders:
     }
 
     fun showSolution() {
-        updateCellValue(correctValue)
+        correctValue?.let { updateCellValue(it, false) }
     }
 
     fun setSelected() {

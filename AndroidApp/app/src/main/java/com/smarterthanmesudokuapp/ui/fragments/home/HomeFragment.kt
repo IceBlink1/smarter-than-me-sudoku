@@ -60,14 +60,18 @@ class HomeFragment : DaggerFragment() {
         }
 
         val sudokuVo = arguments?.getParcelable<HomeArguments>("args")
-        if (sudokuVo != null) {
+        if (sudokuVo != null && sudokuVo.sudoku.solution != null) {
             viewBinding.sudokuView.setUp(sudokuVo.sudoku)
             viewBinding.sudokuView.binding.submitButton.setOnClickListener {
                 viewBinding.sudokuView.binding.submitButton.gone()
                 viewBinding.sudokuView.showSolutionButtons()
             }
         } else {
-            viewBinding.sudokuView.setUp()
+            if (sudokuVo?.sudoku != null) {
+                viewBinding.sudokuView.setUp(sudokuVo.sudoku)
+            } else {
+                viewBinding.sudokuView.setUp()
+            }
             bindProgressButton(viewBinding.sudokuView.binding.submitButton)
             viewBinding.sudokuView.binding.submitButton.attachTextChangeAnimator()
             viewBinding.sudokuView.binding.submitButton.setOnClickListener {
