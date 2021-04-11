@@ -197,6 +197,8 @@ public class DigitRecogniser {
                 }
             }
         }
+        firstNotEmptyRow = Math.max(firstNotEmptyRow, 0);
+        lastNotEmptyRow = Math.max(lastNotEmptyRow, 0);
 
         int firstNotEmptyColumn = -1;
         int lastNotEmptyColumn = -1;
@@ -210,6 +212,8 @@ public class DigitRecogniser {
                 }
             }
         }
+        firstNotEmptyColumn = Math.max(firstNotEmptyColumn, 0);
+        lastNotEmptyColumn = Math.max(lastNotEmptyColumn, 0);
 
         Mat result = new Mat(lastNotEmptyRow - firstNotEmptyRow + 1,
                 lastNotEmptyColumn - firstNotEmptyColumn + 1, CvType.CV_8U);
