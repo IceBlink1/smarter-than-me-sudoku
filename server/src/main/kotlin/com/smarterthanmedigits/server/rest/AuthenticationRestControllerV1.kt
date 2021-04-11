@@ -1,16 +1,15 @@
 package com.smarterthanmedigits.server.rest
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.smarterthanmedigits.server.config.SecurityConfig
 import com.smarterthanmedigits.server.dto.AuthRequestDto
 import com.smarterthanmedigits.server.dto.RegisterRequestDto
 import com.smarterthanmedigits.server.dto.ResetPasswordRequestDto
 import com.smarterthanmedigits.server.model.User
-import com.smarterthanmedigits.server.repository.UserRepository
 import com.smarterthanmedigits.server.security.JwtTokenProvider
 import com.smarterthanmedigits.server.security.JwtUser
 import com.smarterthanmedigits.server.service.EmailService
 import com.smarterthanmedigits.server.service.UserService
+import org.apache.tomcat.util.compat.TLS
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Import
 import org.springframework.http.HttpStatus
@@ -21,8 +20,10 @@ import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UsernameNotFoundException
-import org.springframework.web.bind.annotation.*
-import java.lang.StringBuilder
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 import java.util.*
 import javax.naming.AuthenticationException
 import javax.persistence.PersistenceException
@@ -94,10 +95,11 @@ class AuthenticationRestControllerV1
         userService.save(user)
         emailService.sendEmail(
             SimpleMailMessage().apply {
-                setFrom("smarterthanmedigits@gmail.com")
+                setFrom("smarterthanmedigits@yandex.ru")
                 setTo(user.email)
                 setSubject("Восстановление пароля")
                 setText("Ваш код восстановления: ${user.resetCode}")
+
             }
         )
         return ResponseEntity.status(HttpStatus.CREATED).build()

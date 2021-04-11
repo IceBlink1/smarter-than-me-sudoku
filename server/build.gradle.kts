@@ -40,7 +40,7 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test:2.4.1")
 	testImplementation("org.springframework.security:spring-security-test:2.4.1")
 	implementation("org.springframework.boot:spring-boot-starter-oauth2-client:2.4.1")
-	implementation("org.springframework.boot:spring-boot-starter-mail:2.4.1")
+	implementation("org.springframework.boot:spring-boot-starter-mail:2.4.4")
 	implementation("com.vladmihalcea:hibernate-types-52:2.10.2")
 }
 

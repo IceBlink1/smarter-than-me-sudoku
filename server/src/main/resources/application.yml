@@ -1,0 +1,12 @@
+#spring:
+#  mail:
+#    host: smtp.gmail.com
+#    port: 587
+#    username: smarterthanmedigits@gmail.com
+#    password: IceBlink2010
+#    protocol: smtp
+#  properties.mail.smtp:
+#    auth: true
+#    starttls.enable: true
+#    #ssl.trust: smtp.gmail.com
+#    starttls.required: true

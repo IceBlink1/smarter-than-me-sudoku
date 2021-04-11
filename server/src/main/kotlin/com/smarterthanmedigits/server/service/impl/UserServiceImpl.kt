@@ -7,6 +7,7 @@ import com.smarterthanmedigits.server.repository.RoleRepository
 import com.smarterthanmedigits.server.repository.UserRepository
 import com.smarterthanmedigits.server.service.UserService
 import lombok.extern.slf4j.Slf4j
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import javax.persistence.PersistenceException
@@ -14,9 +15,9 @@ import javax.persistence.PersistenceException
 @Service
 @Slf4j
 class UserServiceImpl(
-    val userRepository: UserRepository,
-    val roleRepository: RoleRepository,
-    val passwordEncoder: BCryptPasswordEncoder
+    @Autowired val userRepository: UserRepository,
+    @Autowired val roleRepository: RoleRepository,
+    @Autowired val passwordEncoder: BCryptPasswordEncoder
 ) : UserService {
 
     override fun register(user: User): User {
