@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SmarterThanMeSudokuApp</string>
+    <string name="app_name">Умнее меня - цифры</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="menu_home">Судоку</string>
     <string name="title_sudoku">История</string>
@@ -25,4 +25,5 @@
     <string name="grant_permission_later_text">Позже</string>
     <string name="title_photo">Фото</string>
     <string name="forgot_password">Забыли пароль?</string>
+    <string name="logout">Выйти</string>
 </resources>

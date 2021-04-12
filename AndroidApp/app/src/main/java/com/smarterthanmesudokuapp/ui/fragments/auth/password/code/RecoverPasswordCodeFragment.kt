@@ -12,6 +12,7 @@ import com.smarterthanmesudokuapp.R
 import com.smarterthanmesudokuapp.databinding.FragmentPasswordRecoveryBinding
 import com.smarterthanmesudokuapp.ui.MainActivity
 import com.smarterthanmesudokuapp.ui.fragments.auth.AuthViewModel
+import com.smarterthanmesudokuapp.utils.FuncUtils.navigateSafe
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -48,7 +49,7 @@ class RecoverPasswordCodeFragment : DaggerFragment() {
             }
             viewModel.loginStateLiveData.observe(viewLifecycleOwner) {
                 if (it == AuthViewModel.AuthState.SETTING_PASSWORD) {
-                    findNavController().navigate(R.id.action_navigation_recover_password_code_to_navigation_recover_password_new_password)
+                    findNavController().navigateSafe(R.id.action_navigation_recover_password_code_to_navigation_recover_password_new_password)
                 }
             }
         }

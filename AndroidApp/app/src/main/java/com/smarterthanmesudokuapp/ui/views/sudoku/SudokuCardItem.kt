@@ -58,7 +58,14 @@ class SudokuCardItem(var cellValue: Int, var correctValue: Int?, val showBorders
     }
 
     fun showSolution() {
-        correctValue?.let { updateCellValue(it, false) }
+        correctValue?.let {
+            if (correctValue != 0) {
+                cellValue = it
+                binding?.numberTextView?.text = it.toString()
+                binding?.numberTextView?.setTextColor(blackColor)
+            }
+            setUnselected()
+        }
     }
 
     fun setSelected() {

@@ -29,6 +29,7 @@ import com.karumi.dexter.listener.single.PermissionListener
 import com.smarterthanmesudokuapp.domain.entities.SudokuVo
 import com.smarterthanmesudokuapp.ui.fragments.home.HomeArguments
 import com.smarterthanmesudokuapp.utils.FuncUtils
+import com.smarterthanmesudokuapp.utils.FuncUtils.navigateSafe
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.coroutines.*
@@ -61,7 +62,7 @@ class PhotoPickerFragment : BottomSheetDialogFragment() {
                 .withPermission(Manifest.permission.CAMERA)
                 .withListener(object : PermissionListener {
                     override fun onPermissionGranted(p0: PermissionGrantedResponse?) {
-                        findNavController().navigate(R.id.action_navigation_photo_picker_to_navigation_camera)
+                        findNavController().navigateSafe(R.id.action_navigation_photo_picker_to_navigation_camera)
                     }
 
                     override fun onPermissionDenied(p0: PermissionDeniedResponse?) {

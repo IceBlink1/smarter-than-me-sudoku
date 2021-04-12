@@ -46,6 +46,11 @@ class AuthViewModel @Inject constructor(
         loginStateMutableLiveData.postValue(AuthState.SKIPPED)
     }
 
+    fun logout() {
+        authRepository.skipAuth()
+        loginStateMutableLiveData.postValue(AuthState.NOT_AUTHENTICATED)
+    }
+
     fun refreshToken() {
         if (loginCached() != null) {
             viewModelScope.launch {
@@ -123,7 +128,6 @@ class AuthViewModel @Inject constructor(
             }
         }
     }
-
 
     enum class AuthState {
         AUTHENTICATED,

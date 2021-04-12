@@ -1,12 +1,13 @@
 package com.smarterthanmesudokuapp.ui.fragments.home
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -19,6 +20,8 @@ import com.smarterthanmesudokuapp.databinding.FragmentHomeBinding
 import com.smarterthanmesudokuapp.domain.entities.SudokuVo
 import com.smarterthanmesudokuapp.ui.MainActivity
 import com.smarterthanmesudokuapp.ui.fragments.auth.AuthViewModel
+import com.smarterthanmesudokuapp.utils.FuncUtils.navigateSafe
+import com.smarterthanmesudokuapp.utils.FuncUtils.observeOnce
 import com.smarterthanmesudokuapp.utils.gone
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
@@ -40,23 +43,25 @@ class HomeFragment : DaggerFragment() {
         savedInstanceState: Bundle?
     ): View {
         viewBinding =
-            FragmentHomeBinding.inflate(LayoutInflater.from(requireContext()), container, false)
+            FragmentHomeBinding.inflate(inflater, container, false)
+
         return viewBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        authViewModel.loginStateLiveData.observe(viewLifecycleOwner) {
+        val observer = Observer<AuthViewModel.AuthState> {
             if (it == AuthViewModel.AuthState.NOT_AUTHENTICATED) {
                 findNavController()
-                    .navigate(R.id.action_navigation_home_to_navigation_login)
+                    .navigateSafe(R.id.action_navigation_home_to_navigation_login)
             } else {
                 (requireActivity() as MainActivity).showBottomNav()
             }
         }
+        authViewModel.loginStateLiveData.observeOnce(viewLifecycleOwner, observer)
         authViewModel.refreshToken()
         if (authViewModel.loginCached() == null && authViewModel.loginStateLiveData.value != AuthViewModel.AuthState.SKIPPED) {
-            findNavController().navigate(R.id.action_navigation_home_to_navigation_login)
+            findNavController().navigateSafe(R.id.action_navigation_home_to_navigation_login)
         }
 
         val sudokuVo = arguments?.getParcelable<HomeArguments>("args")
@@ -104,6 +109,12 @@ class HomeFragment : DaggerFragment() {
 
             }
 
+        }
+        viewBinding.logoutFab.setOnClickListener {
+            authViewModel.logout()
+            (requireActivity() as MainActivity).hideBottomNav()
+            findNavController()
+                .navigateSafe(R.id.action_navigation_home_to_navigation_login)
         }
     }
 

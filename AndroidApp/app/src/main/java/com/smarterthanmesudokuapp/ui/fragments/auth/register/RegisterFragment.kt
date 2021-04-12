@@ -15,6 +15,7 @@ import com.smarterthanmesudokuapp.databinding.FragmentRegisterBinding
 import com.smarterthanmesudokuapp.ui.MainActivity
 import com.smarterthanmesudokuapp.ui.fragments.auth.login.LoginFragment
 import com.smarterthanmesudokuapp.ui.fragments.auth.AuthViewModel
+import com.smarterthanmesudokuapp.utils.FuncUtils.navigateSafe
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -61,9 +62,9 @@ class RegisterFragment : DaggerFragment() {
             )
         }
 
-        viewModel.loginLiveData.observe(viewLifecycleOwner) {
-            if (it != null) {
-                findNavController().navigate(R.id.action_navigation_register_to_navigation_home)
+        viewModel.loginStateLiveData.observe(viewLifecycleOwner) {
+            if (it != null && it != AuthViewModel.AuthState.NOT_AUTHENTICATED) {
+                findNavController().navigateSafe(R.id.action_navigation_register_to_navigation_home)
             }
         }
     }

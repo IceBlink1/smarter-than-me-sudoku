@@ -27,7 +27,11 @@
 
         <action
             android:id="@+id/action_nav_sudoku_to_nav_home"
-            app:destination="@id/navigation_home" />
+            app:destination="@id/navigation_home"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
     </fragment>
 
     <fragment
@@ -37,7 +41,11 @@
         tools:layout="@layout/fragment_camera">
         <action
             android:id="@+id/action_navigation_camera_to_navigation_home"
-            app:destination="@id/navigation_home" />
+            app:destination="@id/navigation_home"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
     </fragment>
 
     <fragment
@@ -54,10 +62,18 @@
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/action_navigation_login_to_navigation_register"
-            app:destination="@id/navigation_register" />
+            app:destination="@id/navigation_register"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
         <action
             android:id="@+id/action_navigation_login_to_navigation_recover_password_email"
-            app:destination="@id/navigation_recover_password_email" />
+            app:destination="@id/navigation_recover_password_email"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
     </fragment>
 
     <fragment
@@ -68,7 +84,11 @@
 
         <action
             android:id="@+id/action_navigation_register_to_navigation_home"
-            app:destination="@id/navigation_home" />
+            app:destination="@id/navigation_home"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
     </fragment>
 
     <fragment
@@ -77,10 +97,19 @@
         tools:layout="@layout/fragment_photo_picker">
         <action
             android:id="@+id/action_navigation_photo_picker_to_navigation_home"
-            app:destination="@id/navigation_home" />
+            app:destination="@id/navigation_home"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            />
         <action
             android:id="@+id/action_navigation_photo_picker_to_navigation_camera"
-            app:destination="@id/navigation_camera" />
+            app:destination="@id/navigation_camera"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
     </fragment>
 
     <fragment
@@ -89,7 +118,11 @@
         tools:layout="@layout/fragment_password_recovery" >
         <action
             android:id="@+id/action_navigation_recover_password_email_to_navigation_recover_password_code"
-            app:destination="@id/navigation_recover_password_code" />
+            app:destination="@id/navigation_recover_password_code"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
     </fragment>
     <fragment
         android:id="@+id/navigation_recover_password_code"
@@ -97,7 +130,11 @@
         tools:layout="@layout/fragment_password_recovery" >
         <action
             android:id="@+id/action_navigation_recover_password_code_to_navigation_recover_password_new_password"
-            app:destination="@id/navigation_recover_password_new_password" />
+            app:destination="@id/navigation_recover_password_new_password"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
     </fragment>
     <fragment
         android:id="@+id/navigation_recover_password_new_password"
@@ -105,6 +142,10 @@
         tools:layout="@layout/fragment_password_recovery" >
         <action
             android:id="@+id/action_navigation_recover_password_new_password_to_navigation_home"
-            app:destination="@id/navigation_home" />
+            app:destination="@id/navigation_home"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
     </fragment>
 </navigation>

@@ -17,6 +17,7 @@ import com.smarterthanmesudokuapp.databinding.FragmentCameraBinding
 import com.smarterthanmesudokuapp.domain.entities.SudokuVo
 import com.smarterthanmesudokuapp.ui.fragments.home.HomeArguments
 import com.smarterthanmesudokuapp.utils.ContourExtractor
+import com.smarterthanmesudokuapp.utils.FuncUtils.navigateSafe
 import com.smarterthanmesudokuapp.utils.disable
 import com.smarterthanmesudokuapp.utils.enable
 import dagger.android.support.DaggerFragment

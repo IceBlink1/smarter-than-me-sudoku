@@ -13,6 +13,7 @@ import com.smarterthanmesudokuapp.R
 import com.smarterthanmesudokuapp.databinding.FragmentPasswordRecoveryBinding
 import com.smarterthanmesudokuapp.ui.MainActivity
 import com.smarterthanmesudokuapp.ui.fragments.auth.AuthViewModel
+import com.smarterthanmesudokuapp.utils.FuncUtils.navigateSafe
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -49,7 +50,7 @@ class RecoverPasswordEmailFragment : DaggerFragment() {
             }
             viewModel.loginStateLiveData.observe(viewLifecycleOwner) {
                 if (it == AuthViewModel.AuthState.PENDING) {
-                    findNavController().navigate(R.id.action_navigation_recover_password_email_to_navigation_recover_password_code)
+                    findNavController().navigateSafe(R.id.action_navigation_recover_password_email_to_navigation_recover_password_code)
                 }
             }
         }

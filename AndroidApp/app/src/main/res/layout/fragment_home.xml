@@ -15,4 +15,14 @@
         android:padding="1dp"
         android:layout_height="match_parent"
         android:background="@color/gray_200"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/logoutFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:src="@drawable/ic_exit_to_app_black_24dp"
+        app:backgroundTint="@color/colorPrimary"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

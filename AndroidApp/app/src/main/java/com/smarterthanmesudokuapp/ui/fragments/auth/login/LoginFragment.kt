@@ -13,6 +13,7 @@ import com.smarterthanmesudokuapp.R
 import com.smarterthanmesudokuapp.databinding.FragmentLoginBinding
 import com.smarterthanmesudokuapp.ui.MainActivity
 import com.smarterthanmesudokuapp.ui.fragments.auth.AuthViewModel
+import com.smarterthanmesudokuapp.utils.FuncUtils.navigateSafe
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -58,12 +59,12 @@ class LoginFragment : DaggerFragment() {
         }
 
         binding.registerButton.setOnClickListener {
-            findNavController().navigate(R.id.action_navigation_login_to_navigation_register)
+            findNavController().navigateSafe(R.id.action_navigation_login_to_navigation_register)
         }
 
         viewModel.loginStateLiveData.observe(viewLifecycleOwner) {
             if (it != AuthViewModel.AuthState.NOT_AUTHENTICATED) {
-                findNavController().navigate(R.id.action_navigation_login_to_navigation_home)
+                findNavController().navigateSafe(R.id.action_navigation_login_to_navigation_home)
             }
         }
 
@@ -72,7 +73,7 @@ class LoginFragment : DaggerFragment() {
         }
 
         binding.recoverPasswordButton.setOnClickListener {
-            findNavController().navigate(R.id.action_navigation_login_to_navigation_recover_password_email)
+            findNavController().navigateSafe(R.id.action_navigation_login_to_navigation_recover_password_email)
         }
     }
 
