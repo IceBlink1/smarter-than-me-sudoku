@@ -181,7 +181,7 @@ class PhotoPickerFragment : BottomSheetDialogFragment() {
                             DigitRecogniser(
                                 FuncUtils.assetFilePath(
                                     requireContext(),
-                                    "result200-0.100000-1norm.txt"
+                                    "model.txt"
                                 )
                             )
 
