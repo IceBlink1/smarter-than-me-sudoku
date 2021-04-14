@@ -26,7 +26,8 @@ class SudokuHistoryItem(private val sudokuVo: SudokuVo, val onClickCallback: (Su
         binding?.historySudokuView?.hideAllButtons()
         binding?.historySudokuView?.hidePicker()
         binding?.historySudokuView?.binding?.separator?.gone()
-        binding?.complexityRatingBar?.rating = sudokuVo.complexity?.toFloat() ?: 5f
+        binding?.complexityRatingBar?.rating =
+            if (sudokuVo.complexity?.toFloat() == 0f) sudokuVo.complexity.toFloat() else 5f
         binding?.complexityRatingBar?.invalidate()
     }
 

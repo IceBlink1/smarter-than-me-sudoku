@@ -113,11 +113,11 @@ class HomeFragment : DaggerFragment() {
         }
     }
 
-    override fun onDetach() {
+    override fun onPause() {
         homeViewModel.saveSudoku(
             viewBinding.sudokuView.getSudokuVo()
         )
-        super.onDetach()
+        super.onPause()
     }
 
 }

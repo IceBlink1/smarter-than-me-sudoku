@@ -156,7 +156,9 @@ class DefaultSudokuRepository @Inject constructor(
     override suspend fun saveSudoku(sudoku: Sudoku) {
         cacheAndPerform(sudoku) {
             coroutineScope {
-                launch { sudokuRemoteDataSource.saveSudoku(it) }
+                launch {
+                    sudokuRemoteDataSource.saveSudoku(it)
+                }
                 launch { sudokuLocalDataSource.saveSudoku(it) }
             }
         }
