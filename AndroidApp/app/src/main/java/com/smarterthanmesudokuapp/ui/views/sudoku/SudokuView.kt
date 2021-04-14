@@ -4,18 +4,15 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
-import androidx.core.view.children
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.smarterthanmesudokuapp.R
-import com.smarterthanmesudokuapp.data.entities.Sudoku
 import com.smarterthanmesudokuapp.databinding.ViewSudokuBinding
-import com.smarterthanmesudokuapp.domain.entities.SudokuVo
+import com.smarterthanmesudokuapp.ui.entities.SudokuVo
 import com.smarterthanmesudokuapp.utils.gone
 import com.smarterthanmesudokuapp.utils.visible
 import com.xwray.groupie.GroupieAdapter
 import com.xwray.groupie.OnItemClickListener
-import com.xwray.groupie.Section
 
 class SudokuView(context: Context, attrs: AttributeSet, defStyle: Int) : FrameLayout(
     context,
@@ -77,11 +74,9 @@ class SudokuView(context: Context, attrs: AttributeSet, defStyle: Int) : FrameLa
     }
 
     fun setUp(sudoku: SudokuVo) {
-
         originalField = sudoku.sudoku.map { it.toMutableList() }
         currentField = sudoku.currentSudoku?.map { it.toMutableList() } ?: originalField
         solution = sudoku.solution?.map { it.toMutableList() } ?: solution
-
         setUp()
     }
 
@@ -95,7 +90,6 @@ class SudokuView(context: Context, attrs: AttributeSet, defStyle: Int) : FrameLa
             )
         }
 
-
         binding.sudokuRecyclerView.adapter = fieldAdapter
         binding.sudokuRecyclerView.layoutManager = GridLayoutManager(
             context,
@@ -108,7 +102,9 @@ class SudokuView(context: Context, attrs: AttributeSet, defStyle: Int) : FrameLa
     }
 
     fun showSolutionAt(position: Int) {
+        currentField[position / 9][position % 9] = fieldGroup?.items?.get(position)?.correctValue ?: 0
         fieldGroup?.items?.get(position)?.showSolution()
+
     }
 
     fun hidePicker() {
@@ -155,12 +151,18 @@ class SudokuView(context: Context, attrs: AttributeSet, defStyle: Int) : FrameLa
         fieldAdapter.add(
             fieldGroup!!
         )
-        fieldAdapter.notifyDataSetChanged()
     }
 
     fun showSolution() {
-        fieldGroup?.items?.forEach { it.showSolution() }
+        currentField = solution
+//        fieldGroup?.items?.forEach { it.showSolution() }
+        fieldAdapter.clear()
+        fieldGroup = SudokuFieldGroup(getSudokuVo())
+        fieldAdapter.add(
+            fieldGroup!!
+        )
     }
+
 
     private fun onFieldItemClickedListener() = OnItemClickListener { item, _ ->
         if (item is SudokuCardItem) {

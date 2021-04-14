@@ -1,5 +1,6 @@
 package com.smarterthanmedigits.server.rest
 
+import com.smarterthanmedigits.server.dto.IdDto
 import com.smarterthanmedigits.server.dto.SudokuDto
 import com.smarterthanmedigits.server.mappers.SudokuMapper
 import com.smarterthanmedigits.server.model.Sudoku
@@ -39,9 +40,9 @@ class ContentRestControllerV1 @Autowired constructor(
 
     @GetMapping("sudoku")
     @ResponseBody
-    fun getSudoku(@RequestBody id: Long): ResponseEntity<SudokuResponse> {
+    fun getSudoku(@RequestBody id: IdDto): ResponseEntity<SudokuResponse> {
         val user = getUser()
-        val sudoku = user?.sudokus?.find { it.id == id }
+        val sudoku = user?.sudokus?.find { it.id == id.id }
         return if (sudoku != null) {
             ResponseEntity.ok(sudokuMapper.mapModelToResponse(sudoku))
         } else {
@@ -56,9 +57,9 @@ class ContentRestControllerV1 @Autowired constructor(
     }
 
     @DeleteMapping("sudoku")
-    fun deleteSudoku(@RequestBody sudokuId: Long) {
+    fun deleteSudoku(@RequestBody sudokuId: IdDto) {
         val user = getUser()
-        val sudoku = user?.sudokus?.find { it.id == sudokuId }
+        val sudoku = user?.sudokus?.find { it.id == sudokuId.id }
         if (sudoku != null) {
             sudokuRepository.delete(sudoku)
         }
@@ -79,10 +80,10 @@ class ContentRestControllerV1 @Autowired constructor(
                     updated = Date()
                 }
             }.forEach {
-                val sudoku = sudokuRepository.findByOriginalSudoku(it.originalSudoku)
+                val sudoku = user?.sudokus?.firstOrNull { sudoku -> sudoku.originalSudoku == it.originalSudoku }
                 if (sudoku != null) {
-                    it.created = sudoku.created
                     sudokuRepository.delete(sudoku)
+                    it.updated = sudoku.updated
                 }
                 sudokuRepository.save(it)
             }

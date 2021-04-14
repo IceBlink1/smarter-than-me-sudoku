@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.smarterthanmesudokuapp.data.Result.Success
 import com.smarterthanmesudokuapp.data.Result.Error
-import com.smarterthanmesudokuapp.domain.entities.SudokuVo
+import com.smarterthanmesudokuapp.ui.entities.SudokuVo
 import com.smarterthanmesudokuapp.domain.mappers.SudokuMapper
-import com.smarterthanmesudokuapp.repository.sudoku.SudokuRepository
+import com.smarterthanmesudokuapp.domain.repository.sudoku.SudokuRepository
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject

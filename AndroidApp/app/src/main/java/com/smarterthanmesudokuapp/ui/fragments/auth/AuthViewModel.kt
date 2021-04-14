@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.smarterthanmesudokuapp.data.Result.Error
 import com.smarterthanmesudokuapp.data.Result.Success
 import com.smarterthanmesudokuapp.data.remote.response.AuthResponse
-import com.smarterthanmesudokuapp.repository.auth.AuthRepository
+import com.smarterthanmesudokuapp.domain.repository.auth.AuthRepository
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject

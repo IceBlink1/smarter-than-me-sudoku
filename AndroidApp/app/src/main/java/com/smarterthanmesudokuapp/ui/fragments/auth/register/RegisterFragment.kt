@@ -69,11 +69,6 @@ class RegisterFragment : DaggerFragment() {
         }
     }
 
-//    override fun onAttach(context: Context) {
-//        super.onAttach(context)
-//        (requireActivity() as MainActivity).hideBottomNav()
-//    }
-
     override fun onDetach() {
         super.onDetach()
         (requireActivity() as MainActivity).showBottomNav()

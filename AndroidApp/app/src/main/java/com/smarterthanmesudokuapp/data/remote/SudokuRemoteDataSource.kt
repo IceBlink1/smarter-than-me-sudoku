@@ -5,8 +5,8 @@ import com.smarterthanmesudokuapp.data.Result.Error
 import com.smarterthanmesudokuapp.data.Result.Success
 import com.smarterthanmesudokuapp.data.SudokuDataMapper
 import com.smarterthanmesudokuapp.data.SudokuDataSource
-import com.smarterthanmesudokuapp.data.entities.Sudoku
-import com.smarterthanmesudokuapp.repository.auth.AuthRepository
+import com.smarterthanmesudokuapp.domain.entities.Sudoku
+import com.smarterthanmesudokuapp.domain.repository.auth.AuthRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -19,7 +19,14 @@ class SudokuRemoteDataSource @Inject constructor(
     private val mapper: SudokuDataMapper
 ) : SudokuDataSource {
 
-    private val token: String? by lazy { "Bearer_" + authRepository.getCachedToken() }
+    private val token: String?
+        get() {
+            val tmp = authRepository.getCachedToken()
+            return if (tmp == null)
+                null
+            else
+                "Bearer_$tmp"
+        }
 
     override suspend fun getSudokus(forceUpdate: Boolean): Result<List<Sudoku>> {
         return withContext(dispatcher) {

@@ -1,12 +1,23 @@
-solver/Solver.java
- solver.Solver
-board/Cell.java
- board.Cell
 solver/BuildConfig.java
  solver.BuildConfig
+board/Cell.java
+ board.Cell
+algorithms/dancingLink/SolutionHandler.java
+ algorithms.dancingLink.SolutionHandler
+ algorithms.dancingLink.SudokuHandler
+solver/Solver.java
+ solver.Solver
+algorithms/Algorithm.java
+ algorithms.Algorithm
+algorithms/EnumerationAlg.java
+ algorithms.EnumerationAlg
+algorithms/dancingLink/DancLinks.java
+ algorithms.dancingLink.DancLinks
+ algorithms.dancingLink.DancLinks$ColumnNode
+ algorithms.dancingLink.DancLinks$DancingNode
+algorithms/dancingLink/AbsSolver.java
+ algorithms.dancingLink.AbsSolver
+algorithms/dancingLink/SudokuDlx.java
+ algorithms.dancingLink.SudokuDlx
 board/SudokuField.java
  board.SudokuField
-algoritms/Algorithm.java
- algoritms.Algorithm
-algoritms/EnumerationAlg.java
- algoritms.EnumerationAlg

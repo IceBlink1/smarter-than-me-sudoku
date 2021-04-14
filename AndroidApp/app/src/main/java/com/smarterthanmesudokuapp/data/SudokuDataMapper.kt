@@ -1,6 +1,6 @@
 package com.smarterthanmesudokuapp.data
 
-import com.smarterthanmesudokuapp.data.entities.Sudoku
+import com.smarterthanmesudokuapp.domain.entities.Sudoku
 import com.smarterthanmesudokuapp.data.local.SudokuDto
 import com.smarterthanmesudokuapp.data.remote.post.SudokuPost
 import com.smarterthanmesudokuapp.data.remote.response.SudokuResponseItem

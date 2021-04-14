@@ -3,21 +3,17 @@ package com.smarterthanmesudokuapp.ui.fragments.home
 import android.os.Bundle
 import android.view.*
 import android.widget.Button
-import android.widget.ImageView
-import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.github.razir.progressbutton.attachTextChangeAnimator
 import com.github.razir.progressbutton.bindProgressButton
 import com.github.razir.progressbutton.hideProgress
 import com.github.razir.progressbutton.showProgress
 import com.smarterthanmesudokuapp.R
 import com.smarterthanmesudokuapp.databinding.FragmentHomeBinding
-import com.smarterthanmesudokuapp.domain.entities.SudokuVo
 import com.smarterthanmesudokuapp.ui.MainActivity
 import com.smarterthanmesudokuapp.ui.fragments.auth.AuthViewModel
 import com.smarterthanmesudokuapp.utils.FuncUtils.navigateSafe
@@ -44,7 +40,6 @@ class HomeFragment : DaggerFragment() {
     ): View {
         viewBinding =
             FragmentHomeBinding.inflate(inflater, container, false)
-
         return viewBinding.root
     }
 
@@ -116,6 +111,13 @@ class HomeFragment : DaggerFragment() {
             findNavController()
                 .navigateSafe(R.id.action_navigation_home_to_navigation_login)
         }
+    }
+
+    override fun onDetach() {
+        homeViewModel.saveSudoku(
+            viewBinding.sudokuView.getSudokuVo()
+        )
+        super.onDetach()
     }
 
 }
