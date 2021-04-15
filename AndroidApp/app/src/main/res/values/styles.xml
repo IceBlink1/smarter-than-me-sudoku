@@ -1,0 +1,23 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight">
+        <!-- Customize your theme here. -->
+        <item name="windowActionBar">true</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.Text" parent="AppTheme">
+        <item name="android:textSize">16sp</item>
+        <item name="lineHeight">22dp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="RatingBar" parent="AppTheme">
+        <item name="colorControlNormal">@color/gray_400</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
+    </style>
+
+
+</resources>

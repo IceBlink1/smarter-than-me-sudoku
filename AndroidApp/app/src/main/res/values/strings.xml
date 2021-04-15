@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">Умнее меня - цифры</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="menu_home">Судоку</string>
+    <string name="title_sudoku">История</string>
+    <string name="capture_image">Захватить изображение</string>
+    <string name="username">Имя пользователя</string>
+    <string name="password">Пароль</string>
+    <string name="login">Вход</string>
+    <string name="email">Email</string>
+    <string name="register">Регистрация</string>
+    <string name="title_camera">Камера</string>
+    <string name="finish_edit">Закончить редактирование</string>
+    <string name="skip">Пропустить</string>
+    <string name="complexity">Сложность:</string>
+    <string name="choose_way">Выберите способ</string>
+    <string name="take_picture">Сфотографировать</string>
+    <string name="choose_from_gallery">Выбрать из галереи</string>
+
+    <string name="request_camera_permission_title">Доступ к камере</string>
+    <string name="request_camera_permission_message">Пожалуйста, предоставьте доступ к камере</string>
+    <string name="request_camera_permission_rationale">Камера нужна, чтобы фотографировать судоку</string>
+    <string name="permission_rationale_understand_text">Я понял</string>
+    <string name="grant_permission_text">Позволить</string>
+    <string name="grant_permission_later_text">Позже</string>
+    <string name="title_photo">Фото</string>
+    <string name="forgot_password">Забыли пароль?</string>
+    <string name="logout">Выйти</string>
+</resources>
