@@ -1,28 +1,29 @@
 package algorithms.dancingLink;
 
 import algorithms.dancingLink.DancLinks.*;
+
 import java.util.*;
 
-public interface SolutionHandler{
+public interface SolutionHandler {
     int[][] handleSolution(List<DancingNode> solution);
 }
 
-class SudokuHandler implements SolutionHandler{
+class SudokuHandler implements SolutionHandler {
     int size = 9;
 
-    public int[][] handleSolution(List<DancingNode> answer){
+    public int[][] handleSolution(List<DancingNode> answer) {
         return parseBoard(answer);
         //AbsSolver.printSolution(result);
     }
 
-    private int[][] parseBoard(List<DancingNode> answer){
+    private int[][] parseBoard(List<DancingNode> answer) {
         int[][] result = new int[size][size];
-        for(DancingNode n : answer){
+        for (DancingNode n : answer) {
             DancingNode rcNode = n;
             int min = Integer.parseInt(rcNode.C.name);
-            for(DancingNode tmp = n.R; tmp != n; tmp = tmp.R){
+            for (DancingNode tmp = n.R; tmp != n; tmp = tmp.R) {
                 int val = Integer.parseInt(tmp.C.name);
-                if (val < min){
+                if (val < min) {
                     min = val;
                     rcNode = tmp;
                 }
@@ -38,7 +39,7 @@ class SudokuHandler implements SolutionHandler{
     }
 
 
-    public SudokuHandler(int boardSize){
+    public SudokuHandler(int boardSize) {
         size = boardSize;
     }
 }
