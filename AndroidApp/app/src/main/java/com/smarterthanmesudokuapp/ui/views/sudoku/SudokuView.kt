@@ -13,6 +13,7 @@ import com.smarterthanmesudokuapp.utils.gone
 import com.smarterthanmesudokuapp.utils.visible
 import com.xwray.groupie.GroupieAdapter
 import com.xwray.groupie.OnItemClickListener
+import exception.Pair
 
 class SudokuView(context: Context, attrs: AttributeSet, defStyle: Int) : FrameLayout(
     context,
@@ -84,6 +85,7 @@ class SudokuView(context: Context, attrs: AttributeSet, defStyle: Int) : FrameLa
         fieldGroup = SudokuFieldGroup(
             getSudokuVo()
         )
+        fieldAdapter.clear()
         fieldAdapter.apply {
             add(
                 fieldGroup!!
@@ -102,9 +104,9 @@ class SudokuView(context: Context, attrs: AttributeSet, defStyle: Int) : FrameLa
     }
 
     fun showSolutionAt(position: Int) {
-        currentField[position / 9][position % 9] = fieldGroup?.items?.get(position)?.correctValue ?: 0
+        currentField[position / 9][position % 9] =
+            fieldGroup?.items?.get(position)?.correctValue ?: 0
         fieldGroup?.items?.get(position)?.showSolution()
-
     }
 
     fun hidePicker() {
@@ -146,40 +148,36 @@ class SudokuView(context: Context, attrs: AttributeSet, defStyle: Int) : FrameLa
 
     fun updateSolution(solution: List<MutableList<Int>>) {
         this.solution = solution
-        fieldAdapter.clear()
-        fieldGroup = SudokuFieldGroup(getSudokuVo())
-        fieldAdapter.add(
-            fieldGroup!!
-        )
+        fieldGroup?.addSolution(solution)
+//        fieldAdapter.notifyDataSetChanged()
     }
 
     fun showSolution() {
         currentField = solution
-//        fieldGroup?.items?.forEach { it.showSolution() }
-        fieldAdapter.clear()
-        fieldGroup = SudokuFieldGroup(getSudokuVo())
-        fieldAdapter.add(
-            fieldGroup!!
-        )
+        fieldGroup?.items?.forEach { it.showSolution() }
+    }
+
+    fun showErrorAt(pair: Pair<Int, Int>) {
+        fieldGroup?.items?.get(pair.key * 9 + pair.value)?.showError()
     }
 
 
     private fun onFieldItemClickedListener() = OnItemClickListener { item, _ ->
         if (item is SudokuCardItem) {
-            selectedFieldCell?.first?.setUnselected()
+            selectedFieldCell?.key?.setUnselected()
             selectedFieldCell = Pair(item, fieldAdapter.getAdapterPosition(item))
-            selectedFieldCell?.first?.setSelected()
-            selectedSolutionCell?.first?.cellValue?.let {
-                if (selectedFieldCell?.first?.cellValue == it) {
-                    selectedFieldCell?.first?.updateCellValue(0, shouldEditOriginalField)
+            selectedFieldCell?.key?.setSelected()
+            selectedSolutionCell?.key?.cellValue?.let {
+                if (selectedFieldCell?.key?.cellValue == it) {
+                    selectedFieldCell?.key?.updateCellValue(0, shouldEditOriginalField)
                 } else {
-                    selectedFieldCell?.first?.updateCellValue(it, shouldEditOriginalField)
+                    selectedFieldCell?.key?.updateCellValue(it, shouldEditOriginalField)
                 }
-                val idx = selectedFieldCell?.second
+                val idx = selectedFieldCell?.value
                 if (idx != null) {
-                    currentField[idx / 9][idx % 9] = selectedFieldCell?.first?.cellValue!!
+                    currentField[idx / 9][idx % 9] = selectedFieldCell?.key?.cellValue!!
                     if (shouldEditOriginalField) {
-                        originalField[idx / 9][idx % 9] = selectedFieldCell?.first?.cellValue!!
+                        originalField[idx / 9][idx % 9] = selectedFieldCell?.key?.cellValue!!
                     }
                 }
                 unselectCurrentItems()
@@ -189,22 +187,22 @@ class SudokuView(context: Context, attrs: AttributeSet, defStyle: Int) : FrameLa
 
     private fun onSolutionClickedItemListener() = OnItemClickListener { item, _ ->
         if (item is SudokuCardItem) {
-            selectedSolutionCell?.first?.setUnselected()
+            selectedSolutionCell?.key?.setUnselected()
             selectedSolutionCell = Pair(item, solutionAdapter.getAdapterPosition(item))
-            selectedSolutionCell?.first?.setSelected()
+            selectedSolutionCell?.key?.setSelected()
             if (selectedFieldCell != null) {
-                selectedSolutionCell?.first?.cellValue?.let {
-                    if (selectedFieldCell?.first?.cellValue == it) {
-                        selectedFieldCell?.first?.updateCellValue(0, shouldEditOriginalField)
+                selectedSolutionCell?.key?.cellValue?.let {
+                    if (selectedFieldCell?.key?.cellValue == it) {
+                        selectedFieldCell?.key?.updateCellValue(0, shouldEditOriginalField)
                     } else {
-                        selectedFieldCell?.first?.updateCellValue(it, shouldEditOriginalField)
+                        selectedFieldCell?.key?.updateCellValue(it, shouldEditOriginalField)
                     }
-                    val idx = selectedFieldCell?.second
+                    val idx = selectedFieldCell?.value
                     if (idx != null) {
-                        currentField[idx / 9][idx % 9] = selectedFieldCell?.first?.cellValue!!
+                        currentField[idx / 9][idx % 9] = selectedFieldCell?.key?.cellValue!!
                         if (shouldEditOriginalField) {
                             originalField[idx / 9][idx % 9] =
-                                selectedFieldCell?.first?.cellValue!!
+                                selectedFieldCell?.key?.cellValue!!
                         }
                     }
                     unselectCurrentItems()
@@ -223,8 +221,8 @@ class SudokuView(context: Context, attrs: AttributeSet, defStyle: Int) : FrameLa
     }
 
     private fun unselectCurrentItems() {
-        selectedFieldCell?.first?.setUnselected()
-        selectedSolutionCell?.first?.setUnselected()
+        selectedFieldCell?.key?.setUnselected()
+        selectedSolutionCell?.key?.setUnselected()
         selectedSolutionCell = null
         selectedFieldCell = null
     }

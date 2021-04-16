@@ -7,15 +7,15 @@ public class Cell {
     private final Set<Integer> possibleValues;
     private int potentialValue;
 
-    public Cell(){
+    public Cell() {
         possibleValues = new HashSet<>();
-        for (int i = 1; i < 10; i++){
+        for (int i = 1; i < 10; i++) {
             possibleValues.add(i);
         }
         potentialValue = 0;
     }
 
-    public Cell(int num){
+    public Cell(int num) {
         possibleValues = new HashSet<>();
         possibleValues.add(num);
         potentialValue = num;
@@ -29,13 +29,13 @@ public class Cell {
         return possibleValues;
     }
 
-    public void setValue(int figure){
+    public void setValue(int figure) {
         possibleValues.clear();
         possibleValues.add(figure);
         potentialValue = figure;
     }
 
-    public void removeValue(int num){
+    public void removeValue(int num) {
         possibleValues.remove(num);
     }
 }

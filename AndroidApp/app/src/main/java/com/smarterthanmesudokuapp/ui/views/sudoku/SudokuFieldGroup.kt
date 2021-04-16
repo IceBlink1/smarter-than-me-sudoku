@@ -23,6 +23,12 @@ class SudokuFieldGroup(val sudokuVo: SudokuVo) : Group {
         }
     }
 
+    fun addSolution(solution: List<List<Int>>) {
+        for (i in 0..8)
+            for (j in 0..8)
+                items[i * 9 + j].correctValue = solution[i][j]
+    }
+
     override fun getItemCount(): Int {
         return FIELD_SIZE
     }

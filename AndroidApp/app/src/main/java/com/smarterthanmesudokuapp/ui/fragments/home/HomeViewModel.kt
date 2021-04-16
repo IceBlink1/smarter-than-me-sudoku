@@ -6,6 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.smarterthanmesudokuapp.ui.entities.SudokuVo
 import com.smarterthanmesudokuapp.domain.mappers.SudokuMapper
 import com.smarterthanmesudokuapp.domain.repository.sudoku.SudokuRepository
+import exception.SudokuException
+import exception.Pair
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -13,6 +15,7 @@ import kotlinx.coroutines.withContext
 import solver.Solver
 import timber.log.Timber
 import java.lang.IllegalArgumentException
+import java.util.*
 import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(
@@ -24,15 +27,20 @@ class HomeViewModel @Inject constructor(
 
     val stepLiveData: MutableLiveData<Int> = MutableLiveData()
 
+    val errorsLiveData: MutableLiveData<Set<Pair<Int, Int>>> = MutableLiveData()
+
     fun getSolution(sudoku: List<List<Int>>) {
         val myHandler = CoroutineExceptionHandler { _, throwable ->
             Timber.e(throwable)
+            if (throwable is SudokuException)
+                errorsLiveData.postValue(throwable.errors)
         }
         viewModelScope.launch {
             val solution = withContext(Dispatchers.Default + myHandler) {
                 try {
                     Solver.solve(sudoku.flatten(), 1)
-                } catch (e: IllegalArgumentException) {
+                } catch (e: SudokuException) {
+                    errorsLiveData.postValue(e.errors)
                     null
                 }
             }
@@ -45,7 +53,15 @@ class HomeViewModel @Inject constructor(
             val step = withContext(Dispatchers.Default) {
                 val solution = solutionLiveData.value
                 if (solution != null) {
-                    return@withContext sudoku.flatten().indexOfFirst { it == 0 }
+                    if (sudoku.flatten().contains(0)) {
+                        var a: Int
+                        do {
+                            a = rand.nextInt(81)
+                        } while (sudoku.flatten()[a] != 0)
+                        return@withContext a
+                    } else {
+                        -1
+                    }
                 } else {
                     return@withContext -1
                 }
@@ -56,8 +72,19 @@ class HomeViewModel @Inject constructor(
 
     fun saveSudoku(sudokuVo: SudokuVo) {
         viewModelScope.launch {
-            sudokuRepository.saveSudoku(mapper.mapSudokuVo(sudokuVo))
+            if (sudokuVo.complexity == null)
+                sudokuRepository.saveSudoku(
+                    mapper.mapSudokuVo(
+                        sudokuVo.copy(complexity = Solver.difficultyEstimation())
+                    )
+                )
+            else
+                sudokuRepository.saveSudoku(mapper.mapSudokuVo(sudokuVo))
         }
+    }
+
+    companion object {
+        val rand = Random()
     }
 
 }

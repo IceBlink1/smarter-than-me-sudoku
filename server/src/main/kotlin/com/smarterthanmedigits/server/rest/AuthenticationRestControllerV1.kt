@@ -127,7 +127,7 @@ class AuthenticationRestControllerV1
             userService.resetPassword(user, body.password)
             ResponseEntity.ok().build()
         } else {
-            ResponseEntity.badRequest().build()
+            ResponseEntity.notFound().build()
         }
     }
 

@@ -16,6 +16,7 @@ class SudokuCardItem(var cellValue: Int, var correctValue: Int?, val showBorders
     private var twoDp: Int = -1
     private var whiteColor: Int = -1
     private var redColor: Int = -1
+    private var greenColor: Int = -1
 
     override fun bind(viewBinding: ItemSudokuCardBinding, position: Int) {
         binding = viewBinding
@@ -29,9 +30,9 @@ class SudokuCardItem(var cellValue: Int, var correctValue: Int?, val showBorders
             cellValue = newValue
             binding?.numberTextView?.text = cellValue.toString()
             if (newValue == correctValue) {
-                binding?.numberTextView?.setTextColor(blackColor)
+                showNormal()
             } else {
-                binding?.numberTextView?.setTextColor(redColor)
+                showError()
             }
         } else {
             cellValue = 0
@@ -58,12 +59,31 @@ class SudokuCardItem(var cellValue: Int, var correctValue: Int?, val showBorders
     fun showSolution() {
         correctValue?.let {
             if (correctValue != 0) {
-                cellValue = it
+
                 binding?.numberTextView?.text = it.toString()
-                binding?.numberTextView?.setTextColor(blackColor)
+                if (correctValue == cellValue) {
+                    showNormal()
+                } else {
+                    showCorrect()
+                }
+                cellValue = it
             }
             setUnselected()
         }
+        binding?.numberTextView?.invalidate()
+        binding?.cellCardView?.invalidate()
+    }
+
+    fun showError() {
+        binding?.numberTextView?.setTextColor(redColor)
+    }
+
+    fun showNormal() {
+        binding?.numberTextView?.setTextColor(blackColor)
+    }
+
+    fun showCorrect() {
+        binding?.numberTextView?.setTextColor(greenColor)
     }
 
     fun setSelected() {
@@ -96,6 +116,7 @@ class SudokuCardItem(var cellValue: Int, var correctValue: Int?, val showBorders
         selectColor = view.context.resources.getColor(R.color.colorAccent, null)
         whiteColor = view.context.resources.getColor(R.color.white, null)
         redColor = view.context.resources.getColor(R.color.red, null)
+        greenColor = view.context.resources.getColor(R.color.dark_green, null)
         return ItemSudokuCardBinding.bind(view)
     }
 
