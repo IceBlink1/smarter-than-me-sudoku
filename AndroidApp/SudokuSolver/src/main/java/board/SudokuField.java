@@ -19,9 +19,9 @@ public class SudokuField {
         }
     }
 
-    public int[][] toMatrix(){
+    public int[][] toMatrix() {
         int[][] matrixSudoku = new int[9][9];
-        for (int i = 0; i < 9; ++i){
+        for (int i = 0; i < 9; ++i) {
             for (int g = 0; g < 9; ++g) {
                 matrixSudoku[i][g] = sudoku.get(9 * i + g).getPotentialValue();
             }

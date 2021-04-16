@@ -86,10 +86,10 @@ class HomeFragment : DaggerFragment() {
                             viewBinding.sudokuView.getSudokuVo()
                         )
                         viewBinding.sudokuView.binding.oneStepButton.setOnClickListener {
-                            homeViewModel.getNextStep(viewBinding.sudokuView.currentField)
                             homeViewModel.stepLiveData.observe(viewLifecycleOwner) {
                                 viewBinding.sudokuView.showSolutionAt(it)
                             }
+                            homeViewModel.getNextStep(viewBinding.sudokuView.currentField)
                         }
                     } else {
                         Toast.makeText(
@@ -100,7 +100,17 @@ class HomeFragment : DaggerFragment() {
                         viewBinding.sudokuView.binding.submitButton.hideProgress(R.string.finish_edit)
                     }
                 }
+                homeViewModel.errorsLiveData.observe(viewLifecycleOwner) {
+                    it?.forEach { viewBinding.sudokuView.showErrorAt(it) }
+//                    Toast.makeText(
+//                        requireContext(),
+//                        "Введенный судоку не верен",
+//                        Toast.LENGTH_LONG
+//                    ).show()
+//                    viewBinding.sudokuView.binding.submitButton.hideProgress(R.string.finish_edit)
+                }
                 homeViewModel.getSolution(viewBinding.sudokuView.currentField)
+
 
             }
 
@@ -114,9 +124,11 @@ class HomeFragment : DaggerFragment() {
     }
 
     override fun onPause() {
-        homeViewModel.saveSudoku(
-            viewBinding.sudokuView.getSudokuVo()
-        )
+        val sudokuVo = viewBinding.sudokuView.getSudokuVo()
+        if (sudokuVo.sudoku.flatten().any { it != 0 })
+            homeViewModel.saveSudoku(
+                viewBinding.sudokuView.getSudokuVo()
+            )
         super.onPause()
     }
 
