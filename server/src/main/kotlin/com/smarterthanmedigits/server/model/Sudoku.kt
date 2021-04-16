@@ -2,7 +2,6 @@ package com.smarterthanmedigits.server.model
 
 import com.vladmihalcea.hibernate.type.array.ListArrayType
 import lombok.Data
-import org.hibernate.annotations.Type
 import org.hibernate.annotations.TypeDef
 import javax.persistence.*
 
@@ -26,6 +25,6 @@ class Sudoku : BaseEntity() {
     @Column(name = "complexity")
     var complexity: Int? = null
 
-    @Column(name = "currentSudoku")
+    @Column(name = "current_sudoku")
     var currentSudoku: String? = null
 }

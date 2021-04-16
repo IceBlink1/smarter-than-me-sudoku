@@ -20,7 +20,6 @@ open class BaseEntity {
     @LastModifiedDate
     @Column(name = "updated")
     var updated: Date? = null
-
 }
 
 enum class Status {

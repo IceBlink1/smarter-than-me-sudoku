@@ -1,7 +1,7 @@
 package com.smarterthanmesudokuapp.domain.mappers
 
-import com.smarterthanmesudokuapp.data.entities.Sudoku
-import com.smarterthanmesudokuapp.domain.entities.SudokuVo
+import com.smarterthanmesudokuapp.domain.entities.Sudoku
+import com.smarterthanmesudokuapp.ui.entities.SudokuVo
 import com.smarterthanmesudokuapp.utils.FuncUtils.getStringSudoku
 
 class SudokuMapper {

@@ -3,9 +3,9 @@ package com.smarterthanmesudokuapp.ui.fragments.home
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.smarterthanmesudokuapp.domain.entities.SudokuVo
+import com.smarterthanmesudokuapp.ui.entities.SudokuVo
 import com.smarterthanmesudokuapp.domain.mappers.SudokuMapper
-import com.smarterthanmesudokuapp.repository.sudoku.SudokuRepository
+import com.smarterthanmesudokuapp.domain.repository.sudoku.SudokuRepository
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,7 +31,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             val solution = withContext(Dispatchers.Default + myHandler) {
                 try {
-                    Solver.solve(sudoku.flatten(), 0)
+                    Solver.solve(sudoku.flatten(), 1)
                 } catch (e: IllegalArgumentException) {
                     null
                 }

@@ -5,7 +5,7 @@ import com.smarterthanmesudokuapp.data.Result.Error
 import com.smarterthanmesudokuapp.data.Result.Success
 import com.smarterthanmesudokuapp.data.SudokuDataSource
 import com.smarterthanmesudokuapp.data.SudokuDataMapper
-import com.smarterthanmesudokuapp.data.entities.Sudoku
+import com.smarterthanmesudokuapp.domain.entities.Sudoku
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

@@ -35,7 +35,7 @@ class LoginFragment : DaggerFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding =
-            FragmentLoginBinding.inflate(LayoutInflater.from(requireContext()), container, false)
+            FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
     }
 

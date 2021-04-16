@@ -1,6 +1,6 @@
 package com.smarterthanmesudokuapp.data
 
-import com.smarterthanmesudokuapp.data.entities.Sudoku
+import com.smarterthanmesudokuapp.domain.entities.Sudoku
 
 interface SudokuDataSource {
     suspend fun getSudokus(forceUpdate: Boolean = false): Result<List<Sudoku>>

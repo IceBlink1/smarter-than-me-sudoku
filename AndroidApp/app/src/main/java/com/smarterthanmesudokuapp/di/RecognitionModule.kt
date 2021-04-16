@@ -16,7 +16,7 @@ object RecognitionModule {
     @Provides
     fun providesDigitRecognizer(context: Context): DigitRecogniser {
         return DigitRecogniser(
-            assetFilePath(context, "model.txt")
+            assetFilePath(context, "model1.txt")
         )
     }
 

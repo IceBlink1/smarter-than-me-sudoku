@@ -3,7 +3,7 @@ package com.smarterthanmesudokuapp.ui.fragments.sudoku
 import android.view.View
 import com.smarterthanmesudokuapp.R
 import com.smarterthanmesudokuapp.databinding.ItemSudokuHistoryBinding
-import com.smarterthanmesudokuapp.domain.entities.SudokuVo
+import com.smarterthanmesudokuapp.ui.entities.SudokuVo
 import com.smarterthanmesudokuapp.utils.gone
 import com.xwray.groupie.viewbinding.BindableItem
 
@@ -26,7 +26,8 @@ class SudokuHistoryItem(private val sudokuVo: SudokuVo, val onClickCallback: (Su
         binding?.historySudokuView?.hideAllButtons()
         binding?.historySudokuView?.hidePicker()
         binding?.historySudokuView?.binding?.separator?.gone()
-        binding?.complexityRatingBar?.rating = 5f//sudokuVo.complexity?.toFloat() ?: 5f
+        binding?.complexityRatingBar?.rating =
+            if (sudokuVo.complexity?.toFloat() == 0f) sudokuVo.complexity.toFloat() else 5f
         binding?.complexityRatingBar?.invalidate()
     }
 

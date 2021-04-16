@@ -1,6 +1,5 @@
 package com.smarterthanmesudokuapp.ui.fragments.camera
 
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.os.Handler
 import android.os.HandlerThread
@@ -8,16 +7,13 @@ import android.view.LayoutInflater
 import android.view.SurfaceView
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.digitrecognition.DigitRecogniser
 import com.smarterthanmesudokuapp.R
 import com.smarterthanmesudokuapp.databinding.FragmentCameraBinding
-import com.smarterthanmesudokuapp.domain.entities.SudokuVo
+import com.smarterthanmesudokuapp.ui.entities.SudokuVo
 import com.smarterthanmesudokuapp.ui.fragments.home.HomeArguments
 import com.smarterthanmesudokuapp.utils.ContourExtractor
-import com.smarterthanmesudokuapp.utils.FuncUtils.navigateSafe
 import com.smarterthanmesudokuapp.utils.disable
 import com.smarterthanmesudokuapp.utils.enable
 import dagger.android.support.DaggerFragment
@@ -29,11 +25,6 @@ import javax.inject.Inject
 class CameraFragment : DaggerFragment(), CameraBridgeViewBase.CvCameraViewListener2 {
 
     private var sudokuBoardMat: Mat? = null
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    private val viewModel: CameraViewModel by viewModels { viewModelFactory }
 
     private lateinit var viewDataBinding: FragmentCameraBinding
 

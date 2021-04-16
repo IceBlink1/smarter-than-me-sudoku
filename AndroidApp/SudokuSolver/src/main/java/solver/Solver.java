@@ -1,6 +1,6 @@
 package solver;
 
-import algoritms.EnumerationAlg;
+import algorithms.dancingLink.SudokuDlx;
 import board.SudokuField;
 
 import java.util.ArrayList;
@@ -55,18 +55,18 @@ public class Solver {
     public static List<List<Integer>> solve(List<Integer> data, int version) {
         List<Integer> zeroIndexes = new ArrayList<>(0);
         SudokuField sudokuField = new SudokuField(data);
-        EnumerationAlg enAlg = new EnumerationAlg(sudokuField);
-        int[][] solvedSudoku = enAlg.getSudoku();
+        SudokuDlx dlxAlg = new SudokuDlx();
+        dlxAlg.solve(sudokuField.toMatrix());
+
+        int[][] solvedSudoku = dlxAlg.getRes();
         if (!correctnessCheck(solvedSudoku)) {
             System.out.println("Incorrect sudoku was entered.");
             throw new IllegalArgumentException("Incorrect sudoku was entered.");
-        }
-        else {
-            if (version == 1){
-                enAlg.printSudoku(solvedSudoku);
+        } else {
+            if (version == 1) {
+                printSudoku(solvedSudoku);
                 return convertToListList(solvedSudoku);
-            }
-            else {
+            } else {
                 for (int i = 0; i < sudokuField.size(); ++i) {
                     // Если нет точного значения ячейки
                     if (sudokuField.getSudoku().get(i).getPossibleValues().size() != 1) {
@@ -77,13 +77,13 @@ public class Solver {
                 }
                 int randZerInd = zeroIndexes.get(rnd.nextInt(zeroIndexes.size()));
                 sudokuField.setFigure(randZerInd, solvedSudoku[randZerInd / 9][randZerInd % 9]);
-                enAlg.printSudoku(enAlg.makeMatrixOfList(sudokuField));
-                return convertToListList(enAlg.makeMatrixOfList(sudokuField));
+                printSudoku(sudokuField.toMatrix());
+                return convertToListList(sudokuField.toMatrix());
             }
         }
     }
 
-    public static int difficultyEstimation(){
+    public static int difficultyEstimation() {
         return 1 + rnd.nextInt(5);
     }
 
@@ -97,7 +97,7 @@ public class Solver {
         return true;
     }
 
-    public static List<List<Integer>> convertToListList (int[][] arr){
+    public static List<List<Integer>> convertToListList(int[][] arr) {
         List<List<Integer>> listList = new ArrayList<>();
         for (int[] ints : arr) {
             List<Integer> list = new ArrayList<>();
@@ -107,5 +107,14 @@ public class Solver {
             listList.add(list);
         }
         return listList;
+    }
+
+    public static void printSudoku(int[][] board) {
+        for (int row = 0; row < 9; row++) {
+            for (int column = 0; column < 9; column++) {
+                System.out.print(board[row][column] + " ");
+            }
+            System.out.println();
+        }
     }
 }
