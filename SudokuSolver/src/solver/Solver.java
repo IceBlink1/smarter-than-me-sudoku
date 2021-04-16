@@ -2,11 +2,9 @@ package solver;
 
 import algorithms.dancingLink.SudokuDlx;
 import board.SudokuField;
-import exception.SudokuException;
+import helpingFacilities.*;
 
 import java.util.*;
-
-import javafx.util.Pair;
 
 public class Solver {
     static Random rnd = new Random();
@@ -28,15 +26,17 @@ public class Solver {
             List<List<Integer>> finalSudoku = solve(sudoku, version);
         } catch (SudokuException ex) {
             System.out.println(ex.getMessage());
-            for (Pair<Integer, Integer> elem : ex.getErrors()) {
-                System.out.println(elem.getKey() + " " + elem.getValue() + "; ");
+            if (ex.getErrors() != null) {
+                for (Pair<Integer, Integer> elem : ex.getErrors()) {
+                    System.out.println(elem.getKey() + " " + elem.getValue() + "; ");
+                }
             }
         }
     }
 
     public static List<Integer> readData(String[] args) {
         System.out.println("Input 81 sudoku values divided by gap and 1 in the end to get a full solution " +
-                "or 2 for the next step.");
+                "or 2 for the next step." + "\n");
         List<String> listData = new ArrayList<>(0);
         listData.addAll(Arrays.asList(args));
         if (args.length != 82 || !tryParseIntChecked(listData))
@@ -78,8 +78,11 @@ public class Solver {
 
         SudokuDlx dlxAlg = new SudokuDlx();
         dlxAlg.solve(sudokuField.toMatrix());
-
         int[][] solvedSudoku = dlxAlg.getRes();
+
+        if (solvedSudoku == null) {
+            throw new SudokuException("Error: Invalid sudoku was entered.");
+        }
 
         if (version == 1) {
             System.out.println("Final Sudoku:");
